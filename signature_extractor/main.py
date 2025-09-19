@@ -1,41 +1,24 @@
 import argparse
 import sys
-from pathlib import Path
-from .adapters.csv_adapter import CSVSourceAdapter
 from .core.orchestrator import ExtractionOrchestrator
 from .config import ExtractorConfig, DetectionConfig, ProcessingConfig
+from .adapters.csv_adapter import CSVSourceAdapter
+from .adapters.directory_adapter import DirectorySourceAdapter
+from .utils.logging import setup_logging
+
 
 def main():
     """Main CLI entry point."""
     parser = argparse.ArgumentParser(description="PDF Signature Extractor")
     
-    parser.add_argument(
-        "--source-type", 
-        choices=["csv", "directory", "url"],
-        required=True,
-        help="Type of PDF source"
-    )
-    
-    parser.add_argument(
-        "--source",
-        required=True, 
-        help="Path to CSV file, directory, or PDF URL"
-    )
-    
-    parser.add_argument(
-        "--output-dir",
-        default="signature_results",
-        help="Output directory for results"
-    )
-    
-    parser.add_argument(
-        "--conf-threshold",
-        type=float,
-        default=0.6,
-        help="Confidence threshold for signature detection"
-    )
+    parser.add_argument("--source-type", choices=["csv", "directory"], required=True)
+    parser.add_argument("--source", required=True)
+    parser.add_argument("--output-dir", default="signature_results")
+    parser.add_argument("--conf-threshold", type=float, default=0.6)
     
     args = parser.parse_args()
+    
+    setup_logging()
     
     # Create configuration
     config = ExtractorConfig(
@@ -43,28 +26,30 @@ def main():
         processing=ProcessingConfig(output_dir=args.output_dir)
     )
     
-    # Select appropriate adapter
+    # Select adapter
     if args.source_type == "csv":
-        from .adapters.csv_adapter import CSVSourceAdapter
         adapter = CSVSourceAdapter(config, args.source)
-    elif args.source_type == "directory":
-        from .adapters.directory_adapter import DirectorySourceAdapter
+    else:  # directory
         adapter = DirectorySourceAdapter(config, args.source)
-    # TODO: Add URL adapter
-    else:
-        raise ValueError(f"Unsupported source type: {args.source_type}")
     
-    # Run extraction
+    # Process PDFs
     orchestrator = ExtractionOrchestrator(config)
     sources = adapter.get_pdf_sources()
     
-    results = []
+    # Prepare and add pdf_path to sources
     for source in sources:
-        pdf_path = adapter.prepare_source(source)
-        result = orchestrator.process_pdf(pdf_path, source['source_id'])
-        results.append(result)
+        source['pdf_path'] = adapter.prepare_source(source)
     
-    print(f"Extraction completed: {len(results)} PDFs processed")
+    results = orchestrator.process_multiple_pdfs(sources)
+    
+    # Summary
+    successful = len([r for r in results if 'error' not in r])
+    total_signatures = sum(r.get('signatures_found', 0) for r in results)
+    
+    print(f"Processed {len(results)} PDFs")
+    print(f"Successful: {successful}")
+    print(f"Signatures found: {total_signatures}")
+    
     return 0
 
 
