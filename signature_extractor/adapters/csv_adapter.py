@@ -1,7 +1,8 @@
 import polars as pl
 from ..base_extractor import BaseSourceAdapter
 from ..utils.download import PDFDownloader
-
+from typing import List, Dict, Any
+from ..config import ExtractorConfig
 
 class CSVSourceAdapter(BaseSourceAdapter):
     """

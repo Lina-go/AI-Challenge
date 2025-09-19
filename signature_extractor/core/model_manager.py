@@ -2,7 +2,10 @@ import os
 import glob
 from ultralytics import YOLO
 from huggingface_hub import snapshot_download
+import logging
+from ..config import ExtractorConfig
 
+logger = logging.getLogger(__name__)
 
 class ModelManager:
     """

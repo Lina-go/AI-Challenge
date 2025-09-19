@@ -3,7 +3,7 @@ import sys
 from pathlib import Path
 from .adapters.csv_adapter import CSVSourceAdapter
 from .core.orchestrator import ExtractionOrchestrator
-
+from .config import ExtractorConfig, DetectionConfig, ProcessingConfig
 
 def main():
     """Main CLI entry point."""
@@ -45,8 +45,12 @@ def main():
     
     # Select appropriate adapter
     if args.source_type == "csv":
+        from .adapters.csv_adapter import CSVSourceAdapter
         adapter = CSVSourceAdapter(config, args.source)
-    # Add other adapters as needed
+    elif args.source_type == "directory":
+        from .adapters.directory_adapter import DirectorySourceAdapter
+        adapter = DirectorySourceAdapter(config, args.source)
+    # TODO: Add URL adapter
     else:
         raise ValueError(f"Unsupported source type: {args.source_type}")
     

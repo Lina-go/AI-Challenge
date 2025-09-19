@@ -3,7 +3,10 @@ import json
 import os
 from datetime import datetime
 from typing import List, Dict, Any
+import logging
+from ..config import ExtractorConfig
 
+logger = logging.getLogger(__name__)
 
 class ResultManager:
     """

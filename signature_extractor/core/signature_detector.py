@@ -1,5 +1,6 @@
 from typing import List, Dict, Any
-
+from .model_manager import ModelManager
+from ..config import ExtractorConfig
 
 class SignatureDetector:
     """

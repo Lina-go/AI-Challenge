@@ -5,6 +5,7 @@ from .model_manager import ModelManager
 from .signature_detector import SignatureDetector
 from .image_processor import ImageProcessor
 from .result_manager import ResultManager
+from ..config import ExtractorConfig
 
 logger = logging.getLogger(__name__)
 

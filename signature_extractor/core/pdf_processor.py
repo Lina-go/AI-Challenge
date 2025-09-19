@@ -2,7 +2,7 @@ import fitz  # PyMuPDF
 import os
 from typing import List, Tuple
 from pathlib import Path
-
+from ..config import ExtractorConfig
 
 class PDFProcessor:
     """
