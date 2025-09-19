@@ -1,0 +1,9 @@
+ultralytics
+PyMuPDF
+Pillow
+polars
+huggingface_hub
+requests
+pathlib
+dataclasses
+typing-extensions

@@ -1,5 +1,5 @@
 from PIL import Image
-from typing import Tuple, Dict, Any
+from typing import Dict, Any
 import os
 
 
