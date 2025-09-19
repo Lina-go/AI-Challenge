@@ -1,0 +1,21 @@
+# Core crawler dependencies
+requests>=2.31.0
+beautifulsoup4>=4.12.0
+pandas>=2.0.0
+lxml>=4.9.0
+
+# FastAPI and async support
+fastapi>=0.104.0
+uvicorn[standard]>=0.24.0
+pydantic>=2.5.0
+
+# Optional export formats
+pyarrow>=14.0.0  # For Parquet export
+
+# Development and testing (optional)
+pytest>=7.4.0
+httpx>=0.25.0  # For testing FastAPI endpoints
+
+## Formatting
+isort>=6.0.0
+black>=24.0.0

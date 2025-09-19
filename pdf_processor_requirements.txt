@@ -1,0 +1,21 @@
+# PDF Processing Pipeline Requirements
+
+# Core ML and NLP libraries
+torch>=2.0.0
+transformers>=4.40.0
+
+# Image processing
+Pillow>=10.0.0
+
+# PDF processing
+PyMuPDF>=1.23.0
+
+# LLM API clients
+openai>=1.0.0
+
+# Configuration
+python-dotenv>=1.0.0
+
+# Optional: CUDA support (uncomment if using GPU)
+# torch-audio  # For CUDA support
+# torchvision  # For CUDA support

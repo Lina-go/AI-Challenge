@@ -1,0 +1,28 @@
+# Configuration for Australian Modern Slavery ETL
+australia:
+  statements_path: data/australia/statements/
+  registry_path: data/australia/company_202509.csv
+  output_path: output/australia_enriched.csv
+  
+
+# Configuration for Canadian Modern Slavery ETL
+canada:
+  statements_path: data/canada/ca_statements.csv
+  registry_path: data/canada/ODBus_v1.csv
+  output_path: output/canada_enriched.csv
+  
+
+# Configuration for UK Modern Slavery ETL
+uk:
+  # UK uses a directory for multiple statement files
+  statements_path: data/uk/statements/
+  registry_path: data/uk/open_company_house.csv
+  output_path: output/uk_enriched.csv
+  
+
+# Global ETL settings
+settings:
+  date_format: "%Y-%m-%d"
+  infer_schema_length: 1000
+  ignore_errors: true
+  truncate_ragged_lines: true

@@ -1,0 +1,33 @@
+{
+  "timestamp": "2025-09-19T13:15:03.916681",
+  "countries_processed": [
+    "australia",
+    "canada",
+    "uk"
+  ],
+  "total_records": 27266,
+  "total_unique_entities": 25275,
+  "country_details": {
+    "australia": {
+      "records": 3532,
+      "unique_entities": 1541,
+      "unique_statements": 1758,
+      "average_completeness": 77.5,
+      "join_success_rate": 100.0
+    },
+    "canada": {
+      "records": 478,
+      "unique_entities": 478,
+      "unique_statements": 478,
+      "average_completeness": 54.1,
+      "join_success_rate": 0.0
+    },
+    "uk": {
+      "records": 23256,
+      "unique_entities": 23256,
+      "unique_statements": 23256,
+      "average_completeness": 95.0,
+      "join_success_rate": 0.0
+    }
+  }
+}

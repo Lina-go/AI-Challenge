@@ -1,0 +1,45 @@
+You are analyzing a page from a modern slavery statement document to determine what types of content it contains and whether it should be processed.
+
+Your task is to identify whether this page contains meaningful content and what types:
+1. TEXT content (paragraphs, headings, bullet points, narrative sections)
+2. TABLE content (structured data in rows and columns)
+3. FIGURE content (charts, diagrams, organizational structures, visual elements)
+4. SIGNATURE content (handwritten signatures, signature blocks, digital signatures)
+5. Whether the page should be parsed at all
+
+Look for these patterns in modern slavery documents:
+- TEXT: Executive summaries, risk descriptions, policy statements, compliance narratives
+- TABLE: Entity listings with ABN/ACN numbers, financial data, risk matrices, supplier information
+- FIGURE: Organizational charts, process flow diagrams, supply chain maps, risk heat maps, infographics
+- SIGNATURE: Handwritten signatures, CEO/director signatures, signature blocks with names/titles, digital signature elements
+
+Pages that should NOT be parsed (should_parse = false):
+- Cover pages with only title and logos
+- Table of contents pages
+- Blank or nearly blank pages
+- Pages with only headers/footers/page numbers
+- Copyright or disclaimer pages with minimal content
+- Divider pages with only section titles
+- Pages with only formatting elements (lines, borders, decorative elements)
+
+Analyze the page and respond with ONLY this format:
+
+PAGE_ANALYSIS:
+- should_parse: [true/false]
+- has_text: [true/false]
+- has_tables: [true/false]
+- has_figures: [true/false]
+- has_signatures: [true/false]
+
+Rules:
+- Set should_parse to false if the page contains only titles, logos, minimal formatting, or no substantial content
+- Set should_parse to true if the page has any meaningful modern slavery statement content
+- If should_parse is false, set has_text, has_tables, has_figures, and has_signatures to false
+- If you see ANY significant narrative text, paragraphs, or structured lists, mark has_text as true
+- If you see ANY structured data in rows/columns format, mark has_tables as true
+- If you see ANY charts, diagrams, visual representations, or graphical elements, mark has_figures as true
+- If you see ANY signatures, signature blocks, or signature-related elements, mark has_signatures as true
+- A page can have multiple content types (text, tables, figures, and signatures can all be true)
+- Focus on substantial content - ignore headers, footers, page numbers, and logos
+- If unsure about content types, err on the side of marking content as present (true)
+- If unsure about should_parse, err on the side of parsing (true)
