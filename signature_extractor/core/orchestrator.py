@@ -25,6 +25,48 @@ class ExtractionOrchestrator:
         self.image_processor = ImageProcessor(config)
         self.result_manager = ResultManager(config)
     
+    def process_multiple_pdfs(self, sources: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
+        """
+        Process multiple PDFs with progress tracking.
+        
+        Args:
+            sources: List of source dictionaries
+            
+        Returns:
+            List of processing results
+        """
+        from ..utils.progress import ProgressTracker
+        
+        progress = ProgressTracker(len(sources), "Processing PDFs")
+        results = []
+        
+        for source in sources:
+            try:
+                # Get PDF path from source
+                pdf_path = source.get('pdf_path')
+                if not pdf_path:
+                    raise ValueError(f"No PDF path in source: {source['source_id']}")
+                
+                # Process PDF
+                result = self.process_pdf(pdf_path, source['source_id'])
+                results.append(result)
+                progress.update()
+                
+            except Exception as e:
+                logger.error(f"Failed to process {source['source_id']}: {e}")
+                results.append({
+                    'source_id': source['source_id'], 
+                    'error': str(e),
+                    'signatures_found': 0,
+                    'pages_processed': 0
+                })
+                progress.update(error=True)
+        
+        # Save final results
+        self.result_manager.save_final_results()
+        
+        return results
+    
     def process_pdf(self, pdf_path: str, source_id: str) -> Dict[str, Any]:
         """
         Process a single PDF and extract signatures.

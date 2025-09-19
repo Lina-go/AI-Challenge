@@ -1,6 +1,7 @@
 from abc import ABC, abstractmethod
 from typing import List, Dict, Any
 import polars as pl
+from .config import ExtractorConfig
 
 
 class BaseSourceAdapter(ABC):

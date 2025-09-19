@@ -1,13 +1,11 @@
-"""
-Utility modules for the signature extraction framework.
-"""
-
 from .download import PDFDownloader
-from .image_utils import ImageProcessor
 from .progress import ProgressTracker
+from .logging import setup_logging, get_logger
 
 __all__ = [
     "PDFDownloader",
-    "ImageProcessor", 
-    "ProgressTracker"
+    "ImageUtils",  # ← Cambiar aquí también
+    "ProgressTracker",
+    "setup_logging",
+    "get_logger"
 ]
