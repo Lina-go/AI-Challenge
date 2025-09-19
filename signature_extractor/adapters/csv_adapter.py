@@ -6,9 +6,7 @@ from ..config import ExtractorConfig
 
 class CSVSourceAdapter(BaseSourceAdapter):
     """
-    Adapter for processing PDFs listed in a CSV file.
-    
-    Handles the specific logic for CSV-based PDF sources.
+    Adapter for processing PDFs listed in CSV file
     """
     
     def __init__(self, config: ExtractorConfig, csv_path: str):
@@ -17,7 +15,7 @@ class CSVSourceAdapter(BaseSourceAdapter):
         self.downloader = PDFDownloader(config)
     
     def get_pdf_sources(self) -> List[Dict[str, Any]]:
-        """Load PDF sources from CSV."""
+        """Load PDF sources from CSV"""
         df = pl.read_csv(self.csv_path)
         
         sources = []

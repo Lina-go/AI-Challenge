@@ -14,7 +14,7 @@ def main():
     parser.add_argument("--source-type", choices=["csv", "directory"], required=True)
     parser.add_argument("--source", required=True)
     parser.add_argument("--output-dir", default="signature_results")
-    parser.add_argument("--conf-threshold", type=float, default=0.6)
+    parser.add_argument("--conf-threshold", type=float, default=0.85)
     
     args = parser.parse_args()
     
