@@ -38,10 +38,66 @@ class LLMInterface:
         else:
             raise ValueError(f"Unsupported LLM provider: {provider}")
     
+    def _get_model_auto_class(self, model_name: str):
+        """Determine the appropriate auto class for the model"""
+        model_name_lower = model_name.lower()
+        
+        # Vision-Language Models that need specific auto classes
+        if any(keyword in model_name_lower for keyword in [
+            'llava', 'llava-onevision', 'llava-next'
+        ]):
+            try:
+                from transformers import LlavaForConditionalGeneration
+                return LlavaForConditionalGeneration
+            except ImportError:
+                logger.warning("LlavaForConditionalGeneration not available, falling back to AutoModel")
+                from transformers import AutoModel
+                return AutoModel
+        
+        elif any(keyword in model_name_lower for keyword in [
+            'idefics', 'smolvlm', 'granite-docling'
+        ]):
+            # These models use AutoModel for multimodal tasks
+            from transformers import AutoModel
+            return AutoModel
+        
+        elif any(keyword in model_name_lower for keyword in [
+            'qwen2-vl', 'qwen2.5-vl'
+        ]):
+            try:
+                from transformers import Qwen2VLForConditionalGeneration
+                return Qwen2VLForConditionalGeneration
+            except ImportError:
+                logger.warning("Qwen2VLForConditionalGeneration not available, falling back to AutoModel")
+                from transformers import AutoModel
+                return AutoModel
+        
+        elif any(keyword in model_name_lower for keyword in [
+            'florence'
+        ]):
+            try:
+                from transformers import Florence2ForConditionalGeneration
+                return Florence2ForConditionalGeneration
+            except ImportError:
+                logger.warning("Florence2ForConditionalGeneration not available, falling back to AutoModel")
+                from transformers import AutoModel
+                return AutoModel
+        
+        elif any(keyword in model_name_lower for keyword in [
+            'minicpm-v', 'minicpm-llama3-v'
+        ]):
+            from transformers import AutoModel
+            return AutoModel
+        
+        else:
+            # Default for text-only or generic models
+            from transformers import AutoModelForCausalLM
+            return AutoModelForCausalLM
+    
     def _setup_huggingface(self):
         """Setup HuggingFace transformers model"""
         try:
-            from transformers import AutoProcessor, AutoModelForCausalLM
+            from transformers import AutoProcessor
             import torch
             
             # Device setup
@@ -53,10 +109,14 @@ class LLMInterface:
             # Torch dtype
             torch_dtype = getattr(torch, self.config.torch_dtype)
             
+            # Get appropriate model class
+            ModelClass = self._get_model_auto_class(self.config.model)
+            
             # Model loading configuration
             model_kwargs = {
                 "torch_dtype": torch_dtype,
                 "low_cpu_mem_usage": self.config.low_cpu_mem_usage,
+                "trust_remote_code": self.config.trust_remote_code,
             }
             
             # Device mapping for multi-GPU or CPU
@@ -71,29 +131,68 @@ class LLMInterface:
             
             # Quantization setup
             if self.config.quantization == "4bit":
-                from transformers import BitsAndBytesConfig
-                model_kwargs["quantization_config"] = BitsAndBytesConfig(
-                    load_in_4bit=True,
-                    bnb_4bit_compute_dtype=torch_dtype,
-                    bnb_4bit_use_double_quant=True,
-                    bnb_4bit_quant_type="nf4"
-                )
+                try:
+                    from transformers import BitsAndBytesConfig
+                    model_kwargs["quantization_config"] = BitsAndBytesConfig(
+                        load_in_4bit=True,
+                        bnb_4bit_compute_dtype=torch_dtype,
+                        bnb_4bit_use_double_quant=True,
+                        bnb_4bit_quant_type="nf4"
+                    )
+                except ImportError:
+                    logger.warning("BitsAndBytesConfig not available, skipping 4bit quantization")
             elif self.config.quantization == "8bit":
                 model_kwargs["load_in_8bit"] = True
             
-            # Load model and processor
-            logger.info(f"Loading HuggingFace model: {self.config.model}")
-            self.processor = AutoProcessor.from_pretrained(self.config.model)
-            self.model = AutoModelForCausalLM.from_pretrained(
-                self.config.model,
-                **model_kwargs
-            )
+            # Load processor first (works for most VLMs)
+            logger.info(f"Loading processor for: {self.config.model}")
+            try:
+                self.processor = AutoProcessor.from_pretrained(
+                    self.config.model, 
+                    trust_remote_code=self.config.trust_remote_code
+                )
+            except Exception as e:
+                logger.warning(f"Could not load AutoProcessor: {e}")
+                # Some models might not have a processor
+                self.processor = None
             
-            # Enable flash attention if available and requested
-            if self.config.use_flash_attention and hasattr(self.model.config, 'use_flash_attention_2'):
-                self.model.config.use_flash_attention_2 = True
+            # Load model with appropriate class
+            logger.info(f"Loading HuggingFace model: {self.config.model} using {ModelClass.__name__}")
             
-            logger.info(f"Model loaded successfully on {device}")
+            try:
+                if hasattr(ModelClass, 'from_pretrained'):
+                    self.model = ModelClass.from_pretrained(
+                        self.config.model,
+                        **model_kwargs
+                    )
+                else:
+                    # Fallback to AutoModel
+                    from transformers import AutoModel
+                    logger.warning(f"Falling back to AutoModel for {self.config.model}")
+                    self.model = AutoModel.from_pretrained(
+                        self.config.model,
+                        **model_kwargs
+                    )
+                
+                # Enable flash attention if available and requested
+                if (self.config.use_flash_attention and 
+                    hasattr(self.model, 'config') and 
+                    hasattr(self.model.config, 'use_flash_attention_2')):
+                    self.model.config.use_flash_attention_2 = True
+                
+                logger.info(f"Model loaded successfully on {device}")
+                
+            except Exception as model_error:
+                logger.error(f"Failed to load model with {ModelClass.__name__}: {model_error}")
+                
+                # Final fallback: try AutoModel
+                logger.info("Attempting fallback to AutoModel...")
+                from transformers import AutoModel
+                self.model = AutoModel.from_pretrained(
+                    self.config.model,
+                    **model_kwargs
+                )
+                logger.info("Successfully loaded with AutoModel fallback")
             
         except Exception as e:
             logger.error(f"Error setting up HuggingFace model: {e}")
@@ -110,6 +209,7 @@ class LLMInterface:
                 "gpu_memory_utilization": self.config.gpu_memory_utilization,
                 "tensor_parallel_size": self.config.tensor_parallel_size,
                 "dtype": self.config.torch_dtype,
+                "trust_remote_code": True,
             }
             
             logger.info(f"Loading vLLM model: {self.config.model}")
@@ -147,7 +247,6 @@ class LLMInterface:
     
     def _setup_local(self):
         """Setup for local model files"""
-        # This could be extended for local ONNX, TensorRT, or other optimized formats
         logger.info("Local model setup - delegating to HuggingFace implementation")
         self._setup_huggingface()
     
@@ -241,33 +340,82 @@ class LLMInterface:
     def _process_with_huggingface(self, image: Image.Image, prompt: str) -> str:
         """Process with HuggingFace transformers model"""
         try:
-            # Prepare inputs
-            inputs = self.processor(
-                text=prompt,
-                images=image,
-                return_tensors="pt"
-            )
+            if not self.processor:
+                raise Exception("No processor available for this model")
+            
+            # Prepare inputs - handle different processor interfaces
+            try:
+                inputs = self.processor(
+                    text=prompt,
+                    images=image,
+                    return_tensors="pt"
+                )
+            except Exception as e:
+                logger.warning(f"Standard processor call failed: {e}")
+                # Try alternative processor call
+                try:
+                    inputs = self.processor(
+                        prompt,
+                        image,
+                        return_tensors="pt"
+                    )
+                except Exception as e2:
+                    logger.warning(f"Alternative processor call failed: {e2}")
+                    # Final fallback - try with different parameter names
+                    inputs = self.processor(
+                        prompts=prompt,
+                        images=image,
+                        return_tensors="pt"
+                    )
             
             # Move to device if CUDA
             if hasattr(self.model, 'device'):
                 inputs = {k: v.to(self.model.device) if hasattr(v, 'to') else v 
                          for k, v in inputs.items()}
             
-            # Generate response
+            # Generate response - handle different model interfaces
             with torch.no_grad():
-                outputs = self.model.generate(
-                    **inputs,
-                    max_new_tokens=self.config.max_tokens,
-                    temperature=self.config.temperature,
-                    do_sample=self.config.temperature > 0,
-                    pad_token_id=self.processor.tokenizer.eos_token_id
-                )
-            
-            # Decode response
-            response = self.processor.decode(
-                outputs[0][inputs['input_ids'].shape[1]:], 
-                skip_special_tokens=True
-            )
+                try:
+                    # Standard generation
+                    outputs = self.model.generate(
+                        **inputs,
+                        max_new_tokens=self.config.max_tokens,
+                        temperature=self.config.temperature,
+                        do_sample=self.config.temperature > 0,
+                        pad_token_id=getattr(self.processor.tokenizer, 'eos_token_id', None)
+                    )
+                    
+                    # Decode response
+                    if 'input_ids' in inputs:
+                        response = self.processor.decode(
+                            outputs[0][inputs['input_ids'].shape[1]:], 
+                            skip_special_tokens=True
+                        )
+                    else:
+                        response = self.processor.decode(
+                            outputs[0], 
+                            skip_special_tokens=True
+                        )
+                    
+                except Exception as gen_error:
+                    logger.warning(f"Standard generation failed: {gen_error}")
+                    
+                    # Alternative: try with model.chat or model forward
+                    try:
+                        if hasattr(self.model, 'chat'):
+                            response = self.model.chat(self.processor, image, prompt)
+                        else:
+                            # Direct forward pass
+                            outputs = self.model(**inputs)
+                            if hasattr(outputs, 'logits'):
+                                # Simple greedy decoding
+                                predicted_ids = torch.argmax(outputs.logits, dim=-1)
+                                response = self.processor.decode(predicted_ids[0], skip_special_tokens=True)
+                            else:
+                                response = str(outputs)
+                    except Exception as alt_error:
+                        logger.error(f"All generation methods failed: {alt_error}")
+                        raise
             
             return response.strip()
             
@@ -340,7 +488,8 @@ class LLMInterface:
             "provider": self.config.provider,
             "model": self.config.model,
             "device": getattr(self.config, 'device', 'unknown'),
-            "quantization": getattr(self.config, 'quantization', None)
+            "quantization": getattr(self.config, 'quantization', None),
+            "model_class": type(self.model).__name__ if self.model else "Unknown"
         }
         
         if hasattr(self.model, 'device'):
@@ -364,7 +513,7 @@ def get_cpu_optimized_models():
     return [
         "HuggingFaceTB/SmolVLM-Instruct",
         "openbmb/MiniCPM-V-2_6", 
-        "llava-hf/llava-onevision-qwen2-0.5b-ov-hf",
+        "microsoft/Florence-2-base",
         "ibm-granite/granite-docling-258M"
     ]
 

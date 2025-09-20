@@ -93,14 +93,7 @@ class ExtractionConfig:
                 device="auto"
             ),
             
-            # Specialized document models
-            "granite-docling": LLMConfig(
-                provider="huggingface",
-                model="ibm-granite/granite-docling-258M",
-                torch_dtype="float16",
-                device="auto",
-                quantization="8bit"
-            ),
+            # Document-specialized models  
             "florence-large": LLMConfig(
                 provider="huggingface",
                 model="microsoft/Florence-2-large",
@@ -114,7 +107,7 @@ class ExtractionConfig:
                 device="auto"
             ),
             
-            # Efficiency models (good for limited hardware)
+            # Mid-range GPU models
             "minicpm": LLMConfig(
                 provider="huggingface",
                 model="openbmb/MiniCPM-V-2_6",
@@ -122,44 +115,38 @@ class ExtractionConfig:
                 quantization="4bit",
                 device="auto"
             ),
-            "smolvlm": LLMConfig(
+            "internvl": LLMConfig(
                 provider="huggingface",
-                model="HuggingFaceTB/SmolVLM-Instruct",
+                model="OpenGVLab/InternVL2-8B",
                 torch_dtype="float16",
-                device="auto"
-            ),
-            "smolvlm-2b": LLMConfig(
-                provider="huggingface",
-                model="HuggingFaceTB/SmolVLM-Instruct-2.2B",
-                torch_dtype="float16",
-                device="auto"
+                quantization="4bit"
             ),
             
-            # CPU-optimized models
-            "cpu-smolvlm": LLMConfig(
+            # CPU-optimized models (better compatibility)
+            "cpu-florence": LLMConfig(
                 provider="huggingface",
-                model="HuggingFaceTB/SmolVLM-Instruct",
+                model="microsoft/Florence-2-base",
                 torch_dtype="float32",
                 device="cpu",
+                low_cpu_mem_usage=True
+            ),
+            "cpu-minicpm": LLMConfig(
+                provider="huggingface",
+                model="openbmb/MiniCPM-V-2_6",
+                device="cpu",
+                torch_dtype="float32",
                 quantization="8bit",
                 low_cpu_mem_usage=True
             ),
-            "cpu-llava-tiny": LLMConfig(
+            "cpu-qwen": LLMConfig(
                 provider="huggingface",
-                model="llava-hf/llava-onevision-qwen2-0.5b-ov-hf",
+                model="Qwen/Qwen2.5-VL-3B-Instruct",  # Smaller model for CPU
                 device="cpu",
                 torch_dtype="float32",
                 low_cpu_mem_usage=True
             ),
-            "cpu-granite": LLMConfig(
-                provider="huggingface",
-                model="ibm-granite/granite-docling-258M",
-                device="cpu",
-                torch_dtype="float32",
-                quantization="8bit"
-            ),
             
-            # Local deployment via Ollama
+            # Local deployment via Ollama (most reliable for CPU)
             "ollama-llava": LLMConfig(
                 provider="ollama",
                 model="llava:7b"
@@ -168,9 +155,9 @@ class ExtractionConfig:
                 provider="ollama",
                 model="llava:13b"
             ),
-            "ollama-moondream": LLMConfig(
+            "ollama-minicpm": LLMConfig(
                 provider="ollama",
-                model="moondream"
+                model="minicpm-v"
             ),
             
             # vLLM optimized (for high-throughput)
@@ -187,22 +174,13 @@ class ExtractionConfig:
                 tensor_parallel_size=1
             ),
             
-            # Edge deployment (ultra-lightweight)
-            "edge-tiny": LLMConfig(
+            # Edge deployment (simplest, most compatible)
+            "edge-florence": LLMConfig(
                 provider="huggingface",
-                model="llava-hf/llava-onevision-qwen2-0.5b-ov-hf",
+                model="microsoft/Florence-2-base",
                 device="cpu",
                 torch_dtype="float32",
-                quantization="8bit",
                 low_cpu_mem_usage=True
-            ),
-            
-            # Experimental/Development
-            "internvl": LLMConfig(
-                provider="huggingface",
-                model="OpenGVLab/InternVL2-8B",
-                torch_dtype="float16",
-                quantization="4bit"
             )
         }
         
@@ -244,21 +222,21 @@ class ExtractionConfig:
                 "expected_performance": "75-80% accuracy, 1-3 sec/page"
             },
             "cpu_only": {
-                "preset": "cpu-smolvlm",
+                "preset": "cpu-florence",
                 "description": "CPU-only processing",
                 "requirements": "8GB+ System RAM",
                 "expected_performance": "70-75% accuracy, 10-20 sec/page"
             },
             "edge_device": {
-                "preset": "edge-tiny",
+                "preset": "edge-florence",
                 "description": "Ultra-lightweight for edge deployment",
                 "requirements": "4GB+ System RAM",
                 "expected_performance": "65-70% accuracy, 15-30 sec/page"
             },
             "document_specialist": {
-                "preset": "granite-docling",
+                "preset": "florence-large",
                 "description": "Specialized for document processing",
-                "requirements": "4GB+ GPU/System RAM",
+                "requirements": "8GB+ GPU RAM",
                 "expected_performance": "80-85% accuracy, 2-4 sec/page"
             },
             "local_deployment": {
@@ -272,34 +250,38 @@ class ExtractionConfig:
     @classmethod
     def auto_configure(cls, hardware_profile: str = "auto", output_dir: str = "signature_results") -> 'ExtractionConfig':
         """Automatically configure based on hardware profile"""
-        import torch
-        import psutil
-        
-        if hardware_profile == "auto":
-            # Detect hardware automatically
-            has_cuda = torch.cuda.is_available()
-            if has_cuda:
-                gpu_memory = torch.cuda.get_device_properties(0).total_memory / 1024**3  # GB
-                if gpu_memory >= 24:
-                    hardware_profile = "high_end_gpu"
-                elif gpu_memory >= 12:
-                    hardware_profile = "mid_range_gpu" 
-                elif gpu_memory >= 6:
-                    hardware_profile = "entry_gpu"
+        try:
+            import torch
+            import psutil
+            
+            if hardware_profile == "auto":
+                # Detect hardware automatically
+                has_cuda = torch.cuda.is_available()
+                if has_cuda:
+                    gpu_memory = torch.cuda.get_device_properties(0).total_memory / 1024**3  # GB
+                    if gpu_memory >= 24:
+                        hardware_profile = "high_end_gpu"
+                    elif gpu_memory >= 12:
+                        hardware_profile = "mid_range_gpu" 
+                    elif gpu_memory >= 6:
+                        hardware_profile = "entry_gpu"
+                    else:
+                        hardware_profile = "cpu_only"
                 else:
                     hardware_profile = "cpu_only"
-            else:
-                hardware_profile = "cpu_only"
+        except ImportError:
+            # If torch not available, default to CPU
+            hardware_profile = "cpu_only"
         
         profile_presets = {
             "high_end_gpu": "qwen-medium",
             "mid_range_gpu": "qwen-small", 
             "entry_gpu": "minicpm",
-            "cpu_only": "cpu-smolvlm",
-            "edge": "edge-tiny"
+            "cpu_only": "cpu-florence",
+            "edge": "edge-florence"
         }
         
-        preset = profile_presets.get(hardware_profile, "cpu-smolvlm")
+        preset = profile_presets.get(hardware_profile, "cpu-florence")
         return cls.create_preset(preset, output_dir)
 
 # Utility functions for configuration management
@@ -308,12 +290,12 @@ def get_all_presets() -> List[str]:
     return [
         "openai", "openai-mini", "anthropic", "anthropic-haiku",
         "qwen-large", "qwen-medium", "qwen-small",
-        "granite-docling", "florence-large", "florence-base",
-        "minicpm", "smolvlm", "smolvlm-2b",
-        "cpu-smolvlm", "cpu-llava-tiny", "cpu-granite",
-        "ollama-llava", "ollama-llava-13b", "ollama-moondream",
+        "florence-large", "florence-base",
+        "minicpm", "internvl",
+        "cpu-florence", "cpu-minicpm", "cpu-qwen",
+        "ollama-llava", "ollama-llava-13b", "ollama-minicpm",
         "vllm-qwen", "vllm-minicpm",
-        "edge-tiny", "internvl"
+        "edge-florence"
     ]
 
 def get_commercial_presets() -> List[str]:
@@ -326,6 +308,14 @@ def get_opensource_presets() -> List[str]:
     commercial = get_commercial_presets()
     return [p for p in all_presets if p not in commercial]
 
+def get_cpu_compatible_presets() -> List[str]:
+    """Get list of CPU-compatible presets"""
+    return [
+        "cpu-florence", "cpu-minicpm", "cpu-qwen",
+        "ollama-llava", "ollama-llava-13b", "ollama-minicpm",
+        "edge-florence"
+    ]
+
 def validate_config(config: ExtractionConfig) -> List[str]:
     """Validate configuration and return list of warnings/errors"""
     warnings = []
@@ -336,9 +326,12 @@ def validate_config(config: ExtractionConfig) -> List[str]:
     
     # Check hardware requirements
     if config.llm.provider == "huggingface":
-        import torch
-        if config.llm.device != "cpu" and not torch.cuda.is_available():
-            warnings.append("CUDA not available but GPU device specified")
+        try:
+            import torch
+            if config.llm.device != "cpu" and not torch.cuda.is_available():
+                warnings.append("CUDA not available but GPU device specified")
+        except ImportError:
+            warnings.append("PyTorch not available - required for HuggingFace models")
     
     # Check Ollama availability
     if config.llm.provider == "ollama":

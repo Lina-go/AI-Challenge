@@ -1,21 +1,48 @@
-# Core crawler dependencies
-requests>=2.31.0
-beautifulsoup4>=4.12.0
-pandas>=2.0.0
-lxml>=4.9.0
+# requirements.txt
+# Core dependencies (always required)
+pandas>=1.5.0
+pillow>=9.0.0
+requests>=2.28.0
+PyMuPDF>=1.20.0
+psutil>=5.9.0
 
-# FastAPI and async support
-fastapi>=0.104.0
-uvicorn[standard]>=0.24.0
-pydantic>=2.5.0
+# Commercial API providers (optional - only if using commercial models)
+openai>=1.0.0          # For OpenAI models
+anthropic>=0.7.0       # For Anthropic models
 
-# Optional export formats
-pyarrow>=14.0.0  # For Parquet export
+# Open-source VLM dependencies (install based on needs)
+# Basic transformers support
+torch>=2.0.0           # Required for all open-source models
+transformers>=4.35.0   # HuggingFace transformers
+accelerate>=0.24.0     # For device_map and large models
 
-# Development and testing (optional)
-pytest>=7.4.0
-httpx>=0.25.0  # For testing FastAPI endpoints
+# Vision and image processing
+torchvision>=0.15.0    # Vision utilities
+timm>=0.9.10           # Image models (for some VLMs)
 
-## Formatting
-isort>=6.0.0
-black>=24.0.0
+# Quantization support (for memory efficiency)
+bitsandbytes>=0.41.0   # 4-bit and 8-bit quantization
+optimum>=1.14.0        # Model optimization
+
+# Flash attention (for performance)
+flash-attn>=2.3.0      # Flash attention implementation (CUDA only)
+
+# High-performance inference (optional)
+vllm>=0.2.7            # vLLM for optimized serving (GPU only)
+
+# Local deployment (optional)
+ollama-python>=0.1.0   # Ollama Python client
+
+# Additional optimization libraries (optional)
+safetensors>=0.4.0     # Fast and secure tensor serialization
+sentence-transformers>=2.2.0  # For some embedding models
+
+# Development and testing
+pytest>=7.0.0
+pytest-cov>=4.0.0
+black>=22.0.0
+isort>=5.10.0
+
+# Documentation
+sphinx>=5.0.0
+sphinx-rtd-theme>=1.2.0
