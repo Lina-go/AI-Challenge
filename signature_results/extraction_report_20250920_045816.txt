@@ -1,0 +1,24 @@
+SIGNATURE EXTRACTION REPORT
+==================================================
+
+Extraction completed: 2025-09-20T04:58:16.794374
+
+OVERVIEW:
+--------------------
+Total sources processed: 3
+Successful extractions: 3
+Total signatures found: 3
+Sources with signatures: 3
+
+SUCCESSFUL EXTRACTIONS:
+------------------------------
+- dir_0_document_b16c27f8: 1 signatures
+- dir_1_document_c2704e4b: 1 signatures
+- dir_2_document_d6a7e5f2: 1 signatures
+
+OUTPUT FILES:
+---------------
+- Consolidated CSV: csv_results/signature_extraction_results_20250920_045816.csv
+- Consolidated JSON: json_results/signature_extraction_results_20250920_045816.json
+- Processing Summary: processing_summary_20250920_045816.csv
+- Individual Results: individual_results/

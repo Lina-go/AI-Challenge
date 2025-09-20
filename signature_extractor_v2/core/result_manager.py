@@ -60,6 +60,7 @@ class ResultManager:
                 'source_id': source_id,
                 'signature_count': len(results),
                 'has_signatures': any(r.get('Signature') == 'Yes' for r in results),
+                'signatures': results,  
                 'json_file': str(json_file),
                 'csv_file': str(csv_file) if results else None,
                 'processing_timestamp': datetime.now().isoformat()
