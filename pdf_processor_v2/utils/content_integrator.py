@@ -1,5 +1,5 @@
 """
-Content integration utilities for combining text with tables and figures.
+Content integration utilities for combining text with tables, figures, and signature data.
 """
 
 import re
@@ -12,22 +12,23 @@ def integrate_page_content(
     figure_mapping: Dict[str, str],
     signature_mapping: Dict[str, str] = None,
     has_tables: bool = True,
-    has_figures: bool = True
+    has_figures: bool = True,
+    has_signatures: bool = False
 ) -> str:
     """
-    Integrate text content with tables and figures by replacing placeholders.
-    Signatures remain as placeholders (not replaced).
+    Integrate text content with tables, figures, and signature data by replacing placeholders.
     
     Args:
         text_content: Text with placeholders like [TABLE_1], [FIGURE_2], [SIGNATURE_1]
         table_mapping: Mapping of table IDs to markdown content
         figure_mapping: Mapping of figure IDs to markdown content
-        signature_mapping: Mapping of signature IDs (not used for replacement)
+        signature_mapping: Mapping of signature IDs to markdown tables (when extracted)
         has_tables: Whether the page actually has tables (from analysis)
         has_figures: Whether the page actually has figures (from analysis)
+        has_signatures: Whether the page actually has signatures (from analysis)
         
     Returns:
-        Integrated markdown content with placeholders replaced (except signatures)
+        Integrated markdown content with placeholders replaced
     """
     if not text_content:
         return ""
@@ -41,6 +42,10 @@ def integrate_page_content(
     # If analysis says no figures exist, remove any hallucinated figure placeholders  
     if not has_figures:
         integrated = re.sub(r'\[FIGURE_\d+\]', '', integrated)
+    
+    # If analysis says no signatures exist, remove any hallucinated signature placeholders
+    if not has_signatures:
+        integrated = re.sub(r'\[SIGNATURE_\d+\]', '', integrated)
     
     # Replace table placeholders with headers and content
     for table_id, table_content in table_mapping.items():
@@ -70,7 +75,20 @@ def integrate_page_content(
                 replacement = formatted_figure
             integrated = integrated.replace(placeholder, replacement)
     
-    # Signature placeholders remain unchanged (they stay as [SIGNATURE_X])
+    # NEW: Replace signature placeholders with signature data tables
+    if signature_mapping:
+        for signature_id, signature_content in signature_mapping.items():
+            placeholder = f"[{signature_id}]"
+            if placeholder in integrated:
+                if signature_content.strip():
+                    # Extract signature number for header
+                    sig_num = signature_id.split('_')[1]
+                    formatted_signature = f"\n\n## Signature Information {sig_num}\n\n{signature_content}\n\n"
+                    replacement = formatted_signature
+                else:
+                    # Leave placeholder if no signature data extracted
+                    replacement = f"\n\n[{signature_id}] - Signature detected but data not extracted\n\n"
+                integrated = integrated.replace(placeholder, replacement)
     
     # Clean up extra whitespace
     integrated = re.sub(r'\n{3,}', '\n\n', integrated)
@@ -82,6 +100,7 @@ def validate_integration(
     text_content: str,
     table_mapping: Dict[str, str],
     figure_mapping: Dict[str, str],
+    signature_mapping: Dict[str, str],
     integrated_content: str
 ) -> Dict[str, any]:
     """
@@ -91,6 +110,7 @@ def validate_integration(
         text_content: Original text content
         table_mapping: Table mapping used for integration
         figure_mapping: Figure mapping used for integration
+        signature_mapping: Signature mapping used for integration
         integrated_content: Final integrated content
         
     Returns:
@@ -99,14 +119,16 @@ def validate_integration(
     # Find remaining placeholders
     remaining_table_placeholders = re.findall(r'\[TABLE_\d+\]', integrated_content)
     remaining_figure_placeholders = re.findall(r'\[FIGURE_\d+\]', integrated_content)
+    remaining_signature_placeholders = re.findall(r'\[SIGNATURE_\d+\]', integrated_content)
     
     # Find expected placeholders from original text
     expected_table_placeholders = re.findall(r'\[TABLE_\d+\]', text_content)
     expected_figure_placeholders = re.findall(r'\[FIGURE_\d+\]', text_content)
+    expected_signature_placeholders = re.findall(r'\[SIGNATURE_\d+\]', text_content)
     
     # Calculate success rates
-    total_expected = len(expected_table_placeholders) + len(expected_figure_placeholders)
-    total_remaining = len(remaining_table_placeholders) + len(remaining_figure_placeholders)
+    total_expected = len(expected_table_placeholders) + len(expected_figure_placeholders) + len(expected_signature_placeholders)
+    total_remaining = len(remaining_table_placeholders) + len(remaining_figure_placeholders) + len(remaining_signature_placeholders)
     
     success_rate = 0.0 if total_expected == 0 else ((total_expected - total_remaining) / total_expected) * 100
     
@@ -116,10 +138,13 @@ def validate_integration(
         "remaining_placeholders": total_remaining,
         "remaining_table_placeholders": remaining_table_placeholders,
         "remaining_figure_placeholders": remaining_figure_placeholders,
+        "remaining_signature_placeholders": remaining_signature_placeholders,
         "missing_tables": [p for p in expected_table_placeholders if p in remaining_table_placeholders],
         "missing_figures": [p for p in expected_figure_placeholders if p in remaining_figure_placeholders],
+        "missing_signatures": [p for p in expected_signature_placeholders if p in remaining_signature_placeholders],
         "available_tables": list(table_mapping.keys()),
-        "available_figures": list(figure_mapping.keys())
+        "available_figures": list(figure_mapping.keys()),
+        "available_signatures": list(signature_mapping.keys()) if signature_mapping else []
     }
 
 

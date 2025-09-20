@@ -1,174 +1,91 @@
 === PAGE 2 - INTEGRATION PROMPT OUTPUT ===
 
 TEXT CONTENT:
- ```markdown
-**Modern Slavery Statement**
+```markdown
+# Modern Slavery Statement 2024
 
-**1. Reporting Entities**
+This Modern Slavery Statement is a joint statement of Rheinmetall Defence Australia Pty Ltd as the main operating entity in Australia and other Australian domiciled trading and wholly-owned Rheinmetall entities (as listed below and combined as “Rheinmetall Defence Australia; we”) for the financial year ending 31 December 2024:
 
-This statement covers all entities within our group, including subsidiaries, joint ventures and associates.
+- **Rheinmetall Defence Australia Pty Ltd, (ACN 137 668 092);**
+- **Rheinmetall MAN Military Vehicles Australia Pty Ltd, (ACN 114 035 595);**
+- **Logistic Solutions Australasia Pty Ltd, (ACN 082 483 154).**
 
-**2. Our Approach to Modern Slavery**
+This is Rheinmetall Defence Australia’s fifth annual Modern Slavery Statement that describes what the Rheinmetall entities in Australia together with overseas-located corporate roles (e.g. Compliance, Corporate Social Responsibility and Group Purchasing Department) within the Rheinmetall Group have actioned in 2024 and earlier to prevent Modern Slavery and human trafficking activities in its supply chain or in any other parts of the business.
 
-We are committed to ensuring that there is no modern slavery or human trafficking in our supply chains or in any part of our business. We have a zero-tolerance approach to modern slavery and we are committed to acting ethically and with integrity in all our business dealings and relationships.
+We are acting in consultation with related entities, which we own or control in Australia. Rheinmetall Defence Australia conducted a collaborative consultation process with all local entities to ensure alignment on modern slavery risks, mitigation measures, and reporting responsibilities across the entire corporate structure in Australia.
 
-**3. Risk Assessment**
+Rheinmetall Defence Australia is headquartered at the Military Vehicle Centre of Excellence (MILVEHCOE) production facility in Redbank, Queensland and has offices in Adelaide, Melbourne and Wellington, New Zealand.
 
-We conduct regular risk assessments of our supply chain to identify and mitigate the risk of modern slavery. We work closely with our suppliers to ensure that they meet our standards for ethical business practices.
+## Organisational Structure
 
-**4. Policies and Procedures**
+Rheinmetall Defence Australia is a manufacturer and service provider in the defence sector that is wholly-owned by Rheinmetall Group “Group”. The Rheinmetall Group of companies consists of a group of international companies with leading technologies in the mobility and security industry segments. The Group comprises Rheinmetall Aktiengesellschaft (“Rheinmetall AG”), a publicly listed corporation in Germany (RHM, DAX, ISIN: DE0007030009) and its subsidiaries. Rheinmetall AG is the parent company of the Rheinmetall Group and has its registered office in Duesseldorf, Germany.
 
-Our policies and procedures are designed to prevent modern slavery in our operations and supply chains. These include:
-- A code of conduct for all employees, contractors and suppliers
-- Training on modern slavery for relevant staff
-- A whistleblowing policy to encourage the reporting of any concerns related to modern slavery
+The Group at a glance has:
 
-**5. Performance Indicators**
+- **29,322** Employees worldwide
+- **A$ 16.3bn** (EUR 9.75bn) Approximate global annual consolidated sales
+- **175** subsidiaries in Europe, America, Asia, Africa and Australia
+- **860** Australian workforce employees at the end of December 2024
 
-We monitor our performance against these policies and procedures through key performance indicators (KPIs). These include:
-- The number of modern slavery training sessions completed by relevant staff
-- The number of modern slavery risks identified and mitigated in our supply chain
-- The number of modern slavery incidents reported and investigated
+Rheinmetall Defence Australia is organised into three main business divisions:
 
-**6. Supplier Due Diligence**
-
-We conduct due diligence on all new suppliers to ensure that they meet our standards for ethical business practices. This includes:
-- Verifying the supplier's legal status and registration details
-- Checking for any evidence of modern slavery or human trafficking in the supplier's operations
-- Requiring the supplier to confirm their compliance with local laws and regulations related to modern slavery
-
-**7. Continuous Improvement**
-
-We are committed to continuous improvement in our approach to modern slavery. We regularly review and update our policies, procedures and training materials to ensure that they remain effective in preventing modern slavery in our operations and supply chains.
-
-**8. Stakeholder Engagement**
-
-We engage with stakeholders, including employees, contractors, suppliers, customers and local communities, to raise awareness of modern slavery and encourage them to report any concerns related to modern slavery.
-
-**9. Reporting Mechanisms**
-
-We have established reporting mechanisms for employees, contractors, suppliers and other stakeholders to report any concerns related to modern slavery. These include:
-- A confidential hotline for employees, contractors and suppliers to report any concerns
-- An email address for customers and local communities to report any concerns
-
-**10. External Audit**
-
-We engage an external auditor to review our modern slavery statement and procedures annually. The audit report is presented to the board of directors for review and action as necessary.
-
-[TABLE_1]
-
-**11. Supply Chain Transparency**
-
-We are committed to transparency in our supply chain. We publish an annual modern slavery statement, which includes information about our suppliers, their locations and the steps we take to ensure that they meet our standards for ethical business practices.
+- **Vehicles Systems**: production and development of military vehicles and turrets;
+- **Electronic Solutions**: production and engineering of simulation, training systems and fire control solutions; and
+- **Weapon and Ammunition**: production and engineering of armour systems and weapon assembly.
 
 [FIGURE_1]
-
-**12. Signature of Authorized Officer**
-
-This modern slavery statement has been approved by:
-
-[SIGNATURE_1]
-
-Name: [REDACTED]
-Title: [REDACTED]
-Date: [REDACTED]
-
-**13. Acknowledgement**
-
-By signing below, the authorized officer confirms that they have read and understood this modern slavery statement and that they are responsible for ensuring compliance with our policies, procedures and standards related to modern slavery.
-
-[SIGNATURE_2]
-
-Name: [REDACTED]
-Title: [REDACTED]
-Date: [REDACTED]
-``` 
+```
 
 TABLE MAPPING:
 {}
 
 FIGURE MAPPING:
-{}
+{'FIGURE_1': '**Organizational Structure - Rheinmetall Defence Australia**\n- Parent Company: Rheinmetall AG (Germany)\n  - Subsidiaries: Rheinmetall Defence Australia Pty Ltd, Rheinmetall MAN Military Vehicles Australia Pty Ltd, Logistic Solutions Australasia Pty Ltd\n- Main Business Divisions:\n  - Vehicles Systems: Production and development of military vehicles and turrets\n  - Electronic Solutions: Production and engineering of simulation, training systems, and fire control solutions\n  - Weapon and Ammunition: Production and engineering of armour systems and weapon assembly', 'FIGURE_2': '**Global Presence and Key Metrics**\n- Employees worldwide: 29,322\n- Global annual consolidated sales: A$ 16.3bn (EUR 9.75bn)\n- Subsidiaries: 175 in Europe, America, Asia, Africa, and Australia\n- Australian workforce employees at the end of December 2024: 860'}
 
 SIGNATURE MAPPING:
 {}
 
 INTEGRATED CONTENT:
 ```markdown
-**Modern Slavery Statement**
+# Modern Slavery Statement 2024
 
-**1. Reporting Entities**
+This Modern Slavery Statement is a joint statement of Rheinmetall Defence Australia Pty Ltd as the main operating entity in Australia and other Australian domiciled trading and wholly-owned Rheinmetall entities (as listed below and combined as “Rheinmetall Defence Australia; we”) for the financial year ending 31 December 2024:
 
-This statement covers all entities within our group, including subsidiaries, joint ventures and associates.
+- **Rheinmetall Defence Australia Pty Ltd, (ACN 137 668 092);**
+- **Rheinmetall MAN Military Vehicles Australia Pty Ltd, (ACN 114 035 595);**
+- **Logistic Solutions Australasia Pty Ltd, (ACN 082 483 154).**
 
-**2. Our Approach to Modern Slavery**
+This is Rheinmetall Defence Australia’s fifth annual Modern Slavery Statement that describes what the Rheinmetall entities in Australia together with overseas-located corporate roles (e.g. Compliance, Corporate Social Responsibility and Group Purchasing Department) within the Rheinmetall Group have actioned in 2024 and earlier to prevent Modern Slavery and human trafficking activities in its supply chain or in any other parts of the business.
 
-We are committed to ensuring that there is no modern slavery or human trafficking in our supply chains or in any part of our business. We have a zero-tolerance approach to modern slavery and we are committed to acting ethically and with integrity in all our business dealings and relationships.
+We are acting in consultation with related entities, which we own or control in Australia. Rheinmetall Defence Australia conducted a collaborative consultation process with all local entities to ensure alignment on modern slavery risks, mitigation measures, and reporting responsibilities across the entire corporate structure in Australia.
 
-**3. Risk Assessment**
+Rheinmetall Defence Australia is headquartered at the Military Vehicle Centre of Excellence (MILVEHCOE) production facility in Redbank, Queensland and has offices in Adelaide, Melbourne and Wellington, New Zealand.
 
-We conduct regular risk assessments of our supply chain to identify and mitigate the risk of modern slavery. We work closely with our suppliers to ensure that they meet our standards for ethical business practices.
+## Organisational Structure
 
-**4. Policies and Procedures**
+Rheinmetall Defence Australia is a manufacturer and service provider in the defence sector that is wholly-owned by Rheinmetall Group “Group”. The Rheinmetall Group of companies consists of a group of international companies with leading technologies in the mobility and security industry segments. The Group comprises Rheinmetall Aktiengesellschaft (“Rheinmetall AG”), a publicly listed corporation in Germany (RHM, DAX, ISIN: DE0007030009) and its subsidiaries. Rheinmetall AG is the parent company of the Rheinmetall Group and has its registered office in Duesseldorf, Germany.
 
-Our policies and procedures are designed to prevent modern slavery in our operations and supply chains. These include:
-- A code of conduct for all employees, contractors and suppliers
-- Training on modern slavery for relevant staff
-- A whistleblowing policy to encourage the reporting of any concerns related to modern slavery
+The Group at a glance has:
 
-**5. Performance Indicators**
+- **29,322** Employees worldwide
+- **A$ 16.3bn** (EUR 9.75bn) Approximate global annual consolidated sales
+- **175** subsidiaries in Europe, America, Asia, Africa and Australia
+- **860** Australian workforce employees at the end of December 2024
 
-We monitor our performance against these policies and procedures through key performance indicators (KPIs). These include:
-- The number of modern slavery training sessions completed by relevant staff
-- The number of modern slavery risks identified and mitigated in our supply chain
-- The number of modern slavery incidents reported and investigated
+Rheinmetall Defence Australia is organised into three main business divisions:
 
-**6. Supplier Due Diligence**
+- **Vehicles Systems**: production and development of military vehicles and turrets;
+- **Electronic Solutions**: production and engineering of simulation, training systems and fire control solutions; and
+- **Weapon and Ammunition**: production and engineering of armour systems and weapon assembly.
 
-We conduct due diligence on all new suppliers to ensure that they meet our standards for ethical business practices. This includes:
-- Verifying the supplier's legal status and registration details
-- Checking for any evidence of modern slavery or human trafficking in the supplier's operations
-- Requiring the supplier to confirm their compliance with local laws and regulations related to modern slavery
+## Figure 1
 
-**7. Continuous Improvement**
+**Organizational Structure - Rheinmetall Defence Australia**
+- Parent Company: Rheinmetall AG (Germany)
+  - Subsidiaries: Rheinmetall Defence Australia Pty Ltd, Rheinmetall MAN Military Vehicles Australia Pty Ltd, Logistic Solutions Australasia Pty Ltd
+- Main Business Divisions:
+  - Vehicles Systems: Production and development of military vehicles and turrets
+  - Electronic Solutions: Production and engineering of simulation, training systems, and fire control solutions
+  - Weapon and Ammunition: Production and engineering of armour systems and weapon assembly
 
-We are committed to continuous improvement in our approach to modern slavery. We regularly review and update our policies, procedures and training materials to ensure that they remain effective in preventing modern slavery in our operations and supply chains.
-
-**8. Stakeholder Engagement**
-
-We engage with stakeholders, including employees, contractors, suppliers, customers and local communities, to raise awareness of modern slavery and encourage them to report any concerns related to modern slavery.
-
-**9. Reporting Mechanisms**
-
-We have established reporting mechanisms for employees, contractors, suppliers and other stakeholders to report any concerns related to modern slavery. These include:
-- A confidential hotline for employees, contractors and suppliers to report any concerns
-- An email address for customers and local communities to report any concerns
-
-**10. External Audit**
-
-We engage an external auditor to review our modern slavery statement and procedures annually. The audit report is presented to the board of directors for review and action as necessary.
-
-**11. Supply Chain Transparency**
-
-We are committed to transparency in our supply chain. We publish an annual modern slavery statement, which includes information about our suppliers, their locations and the steps we take to ensure that they meet our standards for ethical business practices.
-
-**12. Signature of Authorized Officer**
-
-This modern slavery statement has been approved by:
-
-[SIGNATURE_1]
-
-Name: [REDACTED]
-Title: [REDACTED]
-Date: [REDACTED]
-
-**13. Acknowledgement**
-
-By signing below, the authorized officer confirms that they have read and understood this modern slavery statement and that they are responsible for ensuring compliance with our policies, procedures and standards related to modern slavery.
-
-[SIGNATURE_2]
-
-Name: [REDACTED]
-Title: [REDACTED]
-Date: [REDACTED]
 ```
