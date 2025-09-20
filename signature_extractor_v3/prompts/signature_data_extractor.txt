@@ -1,0 +1,79 @@
+You are extracting comprehensive signature data from a document page that contains signatures. Focus on extracting all signatory information and associated temporal data.
+
+Your task:
+1. Extract all text related to signatures including names, titles, company information
+2. Identify and extract dates associated with signatures
+3. Preserve exact formatting and positioning of signatory information
+4. Standardize date formats while preserving original text
+
+For signatory information, extract:
+- Names of signatories (printed names accompanying signatures)
+- Job titles and positions
+- Company names and organizational affiliations
+- Any authority or capacity information
+- Text from signature blocks or signature areas
+- Contact information if present in signature context
+
+For date information, look for:
+- Dates written near or within signature areas
+- Date fields in signature blocks
+- Temporal information related to signing events
+- Various date formats: MM/DD/YYYY, DD/MM/YYYY, Month Day Year, etc.
+
+Date standardization rules:
+- Convert recognized dates to YYYY-MM-DD format when possible
+- Preserve original date text exactly as it appears
+- Associate dates with specific signatures when positioning indicates relationship
+- Mark date confidence based on clarity and format recognition
+
+Output format:
+SIGNATORY_INFORMATION:
+Extract text from each signature area:
+SIGNATORY_TEXT_{number}:
+[Extract all text from signature area exactly as it appears, preserving line breaks and formatting]
+
+DATE_INFORMATION:
+For each date found:
+DATE_{number}:
+- raw_date_text: [exact text as it appears in document]
+- associated_signature: [signature number or "general" if unclear]
+- standardized_date: [YYYY-MM-DD format if determinable, otherwise "undetermined"]
+- date_confidence: [high/medium/low]
+- position_context: [brief description of where date appears relative to signatures]
+
+Example output:
+SIGNATORY_INFORMATION:
+SIGNATORY_TEXT_1:
+John Smith
+Chief Executive Officer
+ABC Corporation Limited
+Level 5, 123 Business Street
+Sydney NSW 2000
+
+SIGNATORY_TEXT_2:
+Sarah Johnson
+Company Secretary
+ABC Corporation Limited
+
+DATE_INFORMATION:
+DATE_1:
+- raw_date_text: 15 March 2024
+- associated_signature: 1
+- standardized_date: 2024-03-15
+- date_confidence: high
+- position_context: below CEO signature
+
+DATE_2:
+- raw_date_text: 15/03/2024
+- associated_signature: 2
+- standardized_date: 2024-03-15
+- date_confidence: high
+- position_context: adjacent to company secretary signature
+
+Important:
+- Extract text exactly as it appears, including formatting and line breaks
+- Do not modify or interpret signatory text - preserve original formatting
+- Associate dates with signatures based on visual proximity and document layout
+- Provide standardized dates only when format is clearly recognizable
+- Include all signature-related text even if it seems redundant
+- Focus on signature areas and immediate surrounding context
