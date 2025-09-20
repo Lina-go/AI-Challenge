@@ -1,0 +1,1 @@
+Processing failed: Failed to get PDF info: 'C:\Users\GomezLina(BipGroup)\Documents\GITHUB-PERSONAL\AI-Challenge\pdf_processor_v2\pdfs' is no file

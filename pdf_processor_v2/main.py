@@ -1,7 +1,6 @@
 """
 Unified main entry point for PDF processing and signature extraction.
 """
-
 import argparse
 import sys
 import logging
@@ -13,10 +12,12 @@ from .adapters.csv_adapter import CSVSourceAdapter
 from .adapters.directory_adapter import DirectorySourceAdapter
 from .adapters.url_adapter import URLSourceAdapter
 from .utils.logging_config import setup_logging
+from .core.document_processor import DocumentProcessor
+from .core.llm_interface import create_llm_interface
 
 def main():
     parser = argparse.ArgumentParser(
-        description="PDF Processor v2 - Unified document processing and signature extraction",
+        description="PDF Processor - Unified document processing and signature extraction",
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog="""
 Examples:
@@ -170,8 +171,6 @@ Examples:
         
         # Handle single document processing
         if args.source_type == "single":
-            from .core.document_processor import DocumentProcessor
-            from .core.llm_interface import create_llm_interface
             
             llm = create_llm_interface(config.llm)
             processor = DocumentProcessor(config)
