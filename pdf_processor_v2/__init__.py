@@ -3,10 +3,9 @@ Unified document analysis and signature extraction framework
 """
 from .core.document_processor import DocumentProcessor
 from .core.llm_interface import create_llm_interface
-from .core.orchestrator import SignatureOrchestrator
 from .adapters.csv_adapter import CSVSourceAdapter
-from .core.orchestrator import SignatureOrchestrator
 from .adapters.directory_adapter import DirectorySourceAdapter
+from .adapters.url_adapter import URLSourceAdapter
 
 from .config import (
     ProcessorConfig,

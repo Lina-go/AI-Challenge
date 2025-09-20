@@ -6,7 +6,7 @@ import logging
 from pathlib import Path
 from typing import Optional
 
-from .llm_interface import LLMInterface
+from .llm_interface import LLMInterface, create_llm_interface
 from .page_processor import PageProcessor
 from ..models.document_result import DocumentResult
 from ..utils.pdf_converter import convert_pdf_to_images, get_pdf_info
@@ -18,16 +18,17 @@ logger = logging.getLogger(__name__)
 class DocumentProcessor:
     """Handles processing of complete PDF documents."""
     
-    def __init__(self, llm_interface: LLMInterface, debug_dir: Optional[str] = None):
+    def __init__(self, config, debug_dir: Optional[str] = None):
         """
         Initialize document processor.
         
         Args:
-            llm_interface: LLM interface for processing images
+            config: ProcessorConfig object with LLM and processing configuration
             debug_dir: Optional directory for debug outputs
         """
-        self.llm = llm_interface
-        self.page_processor = PageProcessor(llm_interface, debug_dir)
+        self.config = config
+        self.llm = create_llm_interface(config.llm)
+        self.page_processor = PageProcessor(self.llm, debug_dir)
     
     def process_document(self, pdf_path: str, output_dir: Optional[str] = None) -> DocumentResult:
         """

@@ -12,6 +12,7 @@ from .signature_analyzer import SignatureAnalyzer
 from .data_processor import DataProcessor
 from .result_manager import ResultManager
 from ..utils.progress_tracker import ProgressTracker
+from ..utils.pdf_converter import convert_pdf_to_images
 
 logger = logging.getLogger(__name__)
 
@@ -64,19 +65,34 @@ class MainOrchestrator:
         logger.info(f"Extracting signatures from {source_id}: {pdf_path}")
         
         # Step 1: Convert PDF to images
-        page_images = self.document_processor.process_document(pdf_path)
+        page_images = convert_pdf_to_images(pdf_path)
         
         # Step 2: Analyze each page for signatures
         signature_results = []
-        for page_num, image_path in page_images:
-            page_signatures = self.signature_analyzer.analyze_page(image_path, page_num)
-            for signature in page_signatures:
-                signature.update({
-                    'source_id': source_id,
-                    'pdf_path': pdf_path,
-                    'page_number': page_num
-                })
-                signature_results.append(signature)
+        for page_num, image in page_images:
+            # Save image temporarily for analysis
+            import tempfile
+            import os
+            
+            with tempfile.NamedTemporaryFile(suffix='.png', delete=False) as tmp_file:
+                image.save(tmp_file.name, 'PNG')
+                temp_image_path = tmp_file.name
+            
+            try:
+                page_signatures = self.signature_analyzer.analyze_page(temp_image_path, page_num)
+                for signature in page_signatures:
+                    signature.update({
+                        'source_id': source_id,
+                        'pdf_path': pdf_path,
+                        'page_number': page_num
+                    })
+                    signature_results.append(signature)
+            finally:
+                # Clean up temporary file
+                try:
+                    os.unlink(temp_image_path)
+                except OSError:
+                    pass
         
         # Step 3: Process and clean extracted data
         processed_results = self.data_processor.process_signatures(signature_results)
@@ -91,7 +107,7 @@ class MainOrchestrator:
         
         logger.info(f"Processing document {source_id}: {pdf_path}")
         
-        # Use the existing DocumentProcessor from pdf_processor
+        # Use the existing DocumentProcessor
         result = self.document_processor.process_document(pdf_path)
         
         # Save results to output directory
@@ -107,7 +123,7 @@ class MainOrchestrator:
             'skipped_pages': result.skipped_pages,
             'success_rate': result.get_success_rate(),
             'output_file': str(output_file),
-            'final_markdown_length': len(result.final_markdown or 0)
+            'final_markdown_length': len(result.final_markdown or '')
         }
 
 

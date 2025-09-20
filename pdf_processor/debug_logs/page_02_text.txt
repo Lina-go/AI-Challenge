@@ -28,9 +28,9 @@ The Group at a glance has:
 
 Rheinmetall Defence Australia is organised into three main business divisions:
 
-- **Vehicles Systems:** production and development of military vehicles and turrets;
-- **Electronic Solutions:** production and engineering of simulation, training systems and fire control solutions; and
-- **Weapon and Ammunition:** production and engineering of armour systems and weapon assembly.
+- **Vehicles Systems**: production and development of military vehicles and turrets;
+- **Electronic Solutions**: production and engineering of simulation, training systems and fire control solutions; and
+- **Weapon and Ammunition**: production and engineering of armour systems and weapon assembly.
 
 [FIGURE_1]
 ```

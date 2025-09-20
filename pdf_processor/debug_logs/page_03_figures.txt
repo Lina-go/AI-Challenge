@@ -4,5 +4,4 @@ FIGURE_1
 NOT_INFORMATIVE
 
 FIGURE_2
-**Photographic Representation of Rheinmetall Defence Australia Event**
-- Image showing Rheinmetall Defence Australia Managing Director with RGM and Supacat representatives and Australian Defence Force representatives in Melbourne 2024.
+NOT_INFORMATIVE

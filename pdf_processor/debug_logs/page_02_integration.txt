@@ -29,9 +29,9 @@ The Group at a glance has:
 
 Rheinmetall Defence Australia is organised into three main business divisions:
 
-- **Vehicles Systems:** production and development of military vehicles and turrets;
-- **Electronic Solutions:** production and engineering of simulation, training systems and fire control solutions; and
-- **Weapon and Ammunition:** production and engineering of armour systems and weapon assembly.
+- **Vehicles Systems**: production and development of military vehicles and turrets;
+- **Electronic Solutions**: production and engineering of simulation, training systems and fire control solutions; and
+- **Weapon and Ammunition**: production and engineering of armour systems and weapon assembly.
 
 [FIGURE_1]
 ```
@@ -40,7 +40,7 @@ TABLE MAPPING:
 {}
 
 FIGURE MAPPING:
-{'FIGURE_1': '**Organizational Structure - Rheinmetall Defence Australia**\n- Parent Company: Rheinmetall AG (Germany)\n  - Subsidiaries: Rheinmetall Defence Australia Pty Ltd, Rheinmetall MAN Military Vehicles Australia Pty Ltd, Logistic Solutions Australasia Pty Ltd\n- Business Divisions:\n  - Vehicles Systems: Production and development of military vehicles and turrets\n  - Electronic Solutions: Production and engineering of simulation, training systems, and fire control solutions\n  - Weapon and Ammunition: Production and engineering of armour systems and weapon assembly', 'FIGURE_2': '**Infographic - Rheinmetall Group Overview**\n- 29,322 Employees worldwide\n- A$ 16.3bn (EUR 9.75bn) Approximate global annual consolidated sales\n- 175 Subsidiaries in Europe, America, Asia, Africa, and Australia\n- 860 Australian workforce employees at the end of December 2024'}
+{'FIGURE_1': '**Organizational Structure and Key Metrics**\n- **Map**: Geographic representation highlighting Australia.\n- **Key Metrics**:\n  - 29,322 Employees worldwide\n  - A$ 16.3bn (EUR 9.75bn) Approximate global annual consolidated sales\n  - 175 Subsidiaries in Europe, America, Asia, Africa, and Australia\n  - 860 Australian workforce employees at the end of December 2024\n- **Business Divisions**:\n  - Vehicles Systems: Production and development of military vehicles and turrets\n  - Electronic Solutions: Production and engineering of simulation, training systems, and fire control solutions\n  - Weapon and Ammunition: Production and engineering of armour systems and weapon assembly'}
 
 SIGNATURE MAPPING:
 {}
@@ -74,16 +74,20 @@ The Group at a glance has:
 
 Rheinmetall Defence Australia is organised into three main business divisions:
 
-- **Vehicles Systems:** production and development of military vehicles and turrets;
-- **Electronic Solutions:** production and engineering of simulation, training systems and fire control solutions; and
-- **Weapon and Ammunition:** production and engineering of armour systems and weapon assembly.
+- **Vehicles Systems**: production and development of military vehicles and turrets;
+- **Electronic Solutions**: production and engineering of simulation, training systems and fire control solutions; and
+- **Weapon and Ammunition**: production and engineering of armour systems and weapon assembly.
 
 ## Figure 1
 
-**Organizational Structure - Rheinmetall Defence Australia**
-- Parent Company: Rheinmetall AG (Germany)
-  - Subsidiaries: Rheinmetall Defence Australia Pty Ltd, Rheinmetall MAN Military Vehicles Australia Pty Ltd, Logistic Solutions Australasia Pty Ltd
-- Business Divisions:
+**Organizational Structure and Key Metrics**
+- **Map**: Geographic representation highlighting Australia.
+- **Key Metrics**:
+  - 29,322 Employees worldwide
+  - A$ 16.3bn (EUR 9.75bn) Approximate global annual consolidated sales
+  - 175 Subsidiaries in Europe, America, Asia, Africa, and Australia
+  - 860 Australian workforce employees at the end of December 2024
+- **Business Divisions**:
   - Vehicles Systems: Production and development of military vehicles and turrets
   - Electronic Solutions: Production and engineering of simulation, training systems, and fire control solutions
   - Weapon and Ammunition: Production and engineering of armour systems and weapon assembly
