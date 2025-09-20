@@ -1,0 +1,8 @@
+=== PAGE 3 - ANALYSIS PROMPT OUTPUT ===
+
+PAGE_ANALYSIS:
+- should_parse: true
+- has_text: true
+- has_tables: false
+- has_figures: true
+- has_signatures: false

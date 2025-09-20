@@ -1,0 +1,14 @@
+=== PAGE 2 - FIGURES PROMPT OUTPUT ===
+
+FIGURE_1
+**Organizational Structure and Key Metrics**
+- **Map**: Geographic representation highlighting Australia.
+- **Key Metrics**:
+  - **Employees worldwide**: 29,322
+  - **Annual consolidated sales**: A$ 16.3bn (EUR 9.75bn)
+  - **Subsidiaries**: 175 in Europe, America, Asia, Africa, and Australia
+  - **Australian workforce employees**: 860 at the end of December 2024
+- **Business Divisions**:
+  - **Vehicles Systems**: Production and development of military vehicles and turrets
+  - **Electronic Solutions**: Production and engineering of simulation, training systems, and fire control solutions
+  - **Weapon and Ammunition**: Production and engineering of armour systems and weapon assembly

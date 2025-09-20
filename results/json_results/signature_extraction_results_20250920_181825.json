@@ -1,0 +1,33 @@
+{
+  "extraction_summary": {
+    "total_sources": 1,
+    "successful_sources": 1,
+    "total_signatures": 1,
+    "sources_with_signatures": 1,
+    "extraction_timestamp": "2025-09-20T18:18:25.499905"
+  },
+  "processing_summary": [
+    {
+      "source_id": "dir_0_document_c2704e4b",
+      "signature_count": 1,
+      "has_signatures": true,
+      "processing_status": "success",
+      "error_message": "",
+      "processing_timestamp": "2025-09-20T18:18:25.470870"
+    }
+  ],
+  "signature_results": [
+    {
+      "Signature": "Yes",
+      "Signature_Yes_text": "Nathan Poyner Chief Executive Officer Vehicle Systems International Asia Pacific Managing Director Rheinmetall Defence Australia Pty Ltd",
+      "Signature_Image": "No",
+      "Signature_scanned": "No",
+      "Presence_Signature_date": "No",
+      "Signature_Date": "",
+      "source_id": "dir_0_document_c2704e4b",
+      "page_number": 6,
+      "confidence": "high",
+      "processing_timestamp": "2025-09-20T18:18:25.444441"
+    }
+  ]
+}

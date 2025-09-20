@@ -1,0 +1,10 @@
+=== PAGE 4 - FIGURES PROMPT OUTPUT ===
+
+FIGURE_1
+**Infographic - Human Rights and Modern Slavery Training**
+- Image of a vehicle with military personnel
+- Caption: "1. Testing activities at Seymore Automotive Research Centre (Victoria). 2. Weapons Test and Firing Tunnel."
+- Visual emphasis on training and testing activities related to human rights and modern slavery compliance
+
+FIGURE_2
+NOT_INFORMATIVE
