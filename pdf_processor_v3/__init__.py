@@ -245,5 +245,6 @@ __all__ = [
     # Convenience functions
     "process_document",
     "extract_signatures_from_csv",
+    "process_document_with_signatures",
     "extract_signatures_from_directory"
 ]

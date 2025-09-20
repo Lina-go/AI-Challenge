@@ -87,6 +87,8 @@ Examples:
                        help="Extract tables (document processing)")
     parser.add_argument("--extract-figures", action="store_true", default=True,
                        help="Extract figures (document processing)")
+    parser.add_argument("--extract-sign-doc", action="store_true",
+                   help="Extract signature data during document processing (hybrid mode)")
     parser.add_argument("--debug", action="store_true",
                        help="Enable debug mode")
     
@@ -145,6 +147,7 @@ Examples:
                 extract_tables=args.extract_tables if args.task == "document" else False,
                 extract_figures=args.extract_figures if args.task == "document" else False,
                 extract_signatures=args.task == "signature",
+                extract_signatures_in_document_mode=args.extract_sign_doc if args.task == "document" else False,
                 debug_mode=args.debug
             )
             
