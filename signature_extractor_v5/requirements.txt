@@ -1,0 +1,15 @@
+# requirements.txt
+pandas
+requests
+PyMuPDF
+pillow
+python-dateutil
+
+# Docling and transformers
+docling
+transformers
+torch
+
+# Optional for better performance
+accelerate
+sentencepiece

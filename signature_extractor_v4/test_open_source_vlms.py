@@ -63,25 +63,34 @@ def test_model_loading(preset: str):
 def test_inference(llm_interface: LLMInterface, test_image: Image.Image):
     """Test inference with a simple prompt"""
     logger.info("Testing inference...")
-    
-    simple_prompt = """
-    Look at this image and tell me:
-    1. Do you see any signatures or signature-like elements?
-    2. Do you see any names or dates?
-    
-    Keep your response brief.
-    """
-    
+
+    # Prompt según modelo
+    model_info = llm_interface.get_model_info()
+    model_name = (model_info.get('model') or '').lower()
+
+    base_question = (
+        "Look at this image and tell me:\n"
+        "1) Do you see any signatures or signature-like elements?\n"
+        "2) Do you see any names or dates?\n"
+        "Keep it brief."
+    )
+
+    if "florence" in model_name:
+        task = "<CAPTION>"  # o "<OCR>" si buscas texto
+        prompt = f"{task}\n<image>\n{base_question}"
+    elif any(x in model_name for x in ["qwen", "llava", "minicpm", "smolvlm", "idefics", "granite"]):
+        prompt = f"<image>\n{base_question}"
+    else:
+        prompt = base_question
+
     try:
-        start_time = time.time()
-        response = llm_interface.process_image_with_prompt(test_image, simple_prompt)
-        inference_time = time.time() - start_time
-        
-        logger.info(f"Inference completed in {inference_time:.2f} seconds")
-        logger.info(f"Response: {response[:200]}...")
-        
-        return True, inference_time, response
-        
+        img = test_image.convert("RGB")
+        t0 = time.time()
+        resp = llm_interface.process_image_with_prompt(img, prompt)
+        dt = time.time() - t0
+        logger.info(f"Inference completed in {dt:.2f}s")
+        logger.info(f"Response: {resp[:200]}...")
+        return True, dt, resp
     except Exception as e:
         logger.error(f"Inference failed: {e}")
         return False, None, None
@@ -169,7 +178,7 @@ def main():
     if args.preset:
         presets_to_test = [args.preset]
     elif args.cpu_only:
-        presets_to_test = ["cpu-florence", "cpu-minicpm", "cpu-qwen", "edge-florence"]
+        presets_to_test = ["cpu-florence", "cpu-qwen", "edge-florence"] # "cpu-minicpm"
     elif args.benchmark:
         # Test a representative sample
         if system_info['cuda_available']:

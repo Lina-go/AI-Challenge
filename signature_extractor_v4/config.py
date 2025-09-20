@@ -92,6 +92,32 @@ class ExtractionConfig:
                 torch_dtype="float16",
                 device="auto"
             ),
+            "cpu-qwen-small": LLMConfig(
+                provider="huggingface",
+                model="Qwen/Qwen2.5-VL-3B-Instruct",  # Smaller, more stable
+                device="cpu",
+                torch_dtype="float32",
+                low_cpu_mem_usage=True,
+                quantization=None  # Disable quantization for CPU stability
+            ),
+
+            "cpu-minicpm-stable": LLMConfig(
+                provider="huggingface",
+                model="openbmb/MiniCPM-V-2_6",
+                device="cpu", 
+                torch_dtype="float32",
+                low_cpu_mem_usage=True,
+                quantization=None
+            ),
+
+            "cpu-florence-fixed": LLMConfig(
+                provider="huggingface",
+                model="microsoft/Florence-2-base",
+                device="cpu",
+                torch_dtype="float32",
+                low_cpu_mem_usage=True,
+                trust_remote_code=True
+            ),
             
             # Document-specialized models  
             "florence-large": LLMConfig(

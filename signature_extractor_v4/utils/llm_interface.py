@@ -94,6 +94,10 @@ class LLMInterface:
             from transformers import AutoModelForCausalLM
             return AutoModelForCausalLM
     
+    def _is_florence_model(self) -> bool:
+        """Check if current model is Florence-2"""
+        return 'florence' in self.config.model.lower()
+    
     def _setup_huggingface(self):
         """Setup HuggingFace transformers model"""
         try:
@@ -337,13 +341,34 @@ class LLMInterface:
         
         return message.content[0].text
     
+    def _convert_prompt_to_florence_task(self, prompt: str) -> str:
+        """Convert general prompt to Florence-2 task format"""
+        prompt_lower = prompt.lower()
+        
+        # Map common prompt patterns to Florence-2 tasks
+        if any(keyword in prompt_lower for keyword in ['signature', 'sign', 'handwritten']):
+            return "<OD>"  # Object detection for signatures
+        elif any(keyword in prompt_lower for keyword in ['text', 'read', 'ocr']):
+            return "<OCR>"  # OCR task
+        elif any(keyword in prompt_lower for keyword in ['describe', 'caption', 'see']):
+            return "<CAPTION>"  # General captioning
+        elif any(keyword in prompt_lower for keyword in ['dense', 'detailed']):
+            return "<DENSE_REGION_CAPTION>"  # Detailed description
+        else:
+            # Default to detailed captioning for document analysis
+            return "<MORE_DETAILED_CAPTION>"
+    
     def _process_with_huggingface(self, image: Image.Image, prompt: str) -> str:
         """Process with HuggingFace transformers model"""
         try:
             if not self.processor:
                 raise Exception("No processor available for this model")
             
-            # Prepare inputs - handle different processor interfaces
+            # Special handling for Florence-2 models
+            if self._is_florence_model():
+                return self._process_with_florence(image, prompt)
+            
+            # Standard processing for other models
             try:
                 inputs = self.processor(
                     text=prompt,
@@ -422,6 +447,101 @@ class LLMInterface:
         except Exception as e:
             logger.error(f"Error processing with HuggingFace model: {e}")
             raise
+    
+    def _process_with_florence(self, image: Image.Image, prompt: str) -> str:
+        """Special handling for Florence-2 models"""
+        try:
+            # Ensure RGB image
+            if image.mode != "RGB":
+                image = image.convert("RGB")
+
+            # 1) Determine task token: prefer explicit token in prompt, otherwise infer
+            explicit_tokens = [
+                "<OCR>", "<OD>", "<CAPTION>", "<MORE_DETAILED_CAPTION>", "<DENSE_REGION_CAPTION>"
+            ]
+            task_prompt = None
+            if prompt:
+                for tok in explicit_tokens:
+                    if tok in prompt:
+                        task_prompt = tok
+                        break
+            if task_prompt is None:
+                task_prompt = self._convert_prompt_to_florence_task(prompt or "")
+
+            # 2) Florence expects ONLY the task token in the text field.
+            # Do NOT append user text or <image> placeholder here.
+            text = task_prompt
+
+            # 3) Prepare inputs via processor
+            inputs = self.processor(
+                text=text,
+                images=image,
+                return_tensors="pt",
+            )
+
+            # 4) Move to device
+            if hasattr(self.model, 'device'):
+                inputs = {k: (v.to(self.model.device) if hasattr(v, 'to') else v) for k, v in inputs.items()}
+
+            # 5) Generate
+            max_new = min(getattr(self.config, 'max_tokens', 512) or 512, 1024)
+            do_sample = (getattr(self.config, 'temperature', 0.0) or 0.0) > 0
+            with torch.no_grad():
+                generated_ids = self.model.generate(
+                    **inputs,
+                    max_new_tokens=max_new,
+                    do_sample=do_sample,
+                    temperature=getattr(self.config, 'temperature', 0.0) or 0.0,
+                    num_beams=1 if do_sample else 3,
+                )
+
+            # 6) Decode and post-process
+            generated_text = self.processor.batch_decode(
+                generated_ids, skip_special_tokens=False
+            )[0]
+
+            parsed = self.processor.post_process_generation(
+                generated_text,
+                task=task_prompt,
+                image_size=(image.width, image.height),
+            )
+
+            # 7) Normalize outputs across tasks
+            if task_prompt == "<OCR>":
+                if isinstance(parsed, dict):
+                    return parsed.get("text") or parsed.get("ocr") or ""
+                return str(parsed)
+            if task_prompt == "<OD>":
+                # Return a succinct summary if possible
+                if isinstance(parsed, dict):
+                    labels = parsed.get("labels") or parsed.get("classes") or []
+                    if labels:
+                        return ", ".join(labels)
+                return str(parsed)
+            # Caption or other tasks
+            if isinstance(parsed, dict):
+                return parsed.get("text") or parsed.get("caption") or str(parsed)
+            return str(parsed)
+
+        except Exception as e:
+            logger.error(f"Error processing with Florence-2: {e}")
+            # Minimal fallback: force a plain caption with ONLY task token
+            try:
+                fallback_text = "<CAPTION>"
+                inputs = self.processor(text=fallback_text, images=image, return_tensors="pt")
+                if hasattr(self.model, 'device'):
+                    inputs = {k: (v.to(self.model.device) if hasattr(v, 'to') else v) for k, v in inputs.items()}
+                with torch.no_grad():
+                    generated_ids = self.model.generate(
+                        **inputs,
+                        max_new_tokens=256,
+                        do_sample=False,
+                    )
+                generated_text = self.processor.batch_decode(generated_ids, skip_special_tokens=True)[0]
+                return generated_text.strip()
+            except Exception as fallback_error:
+                logger.error(f"Florence-2 fallback also failed: {fallback_error}")
+                raise
     
     def _process_with_vllm(self, image: Image.Image, prompt: str) -> str:
         """Process with vLLM optimized inference"""
