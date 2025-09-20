@@ -21,8 +21,14 @@ Examples:
   # Extract using HuggingFace GLM-4.5V model
   python -m signature_extractor_v3.main csv --source statements.csv --preset glm-4.5v
   
-  # Extract from directory using GLM-4.5V preset
-  python -m signature_extractor_v3.main directory --source /path/to/pdfs/ --preset glm-4.5v
+  # Extract using Ollama Moondream model
+  python -m signature_extractor_v3.main csv --source statements.csv --preset ollama-moondream
+  
+  # Extract from directory using Ollama preset
+  python -m signature_extractor_v3.main directory --source /path/to/pdfs/ --preset ollama-llava
+  
+  # Manual Ollama configuration
+  python -m signature_extractor_v3.main csv --source statements.csv --llm-provider ollama --llm-model "moondream:1.8b"
   
   # Manual HuggingFace configuration
   python -m signature_extractor_v3.main csv --source statements.csv --llm-provider huggingface --llm-model "zai-org/GLM-4.5V:novita"
@@ -49,12 +55,13 @@ Examples:
     
     # Preset configuration
     parser.add_argument("--preset", 
-                       choices=["openai", "anthropic", "glm-4.5v", "qwen-vl"],
+                       choices=["openai", "anthropic", "glm-4.5v", "qwen-vl", 
+                               "ollama-moondream", "ollama-llava", "ollama-llava-13b"],
                        help="Use predefined model configuration")
     
     # LLM configuration
     parser.add_argument("--llm-provider", 
-                       choices=["openai", "anthropic", "huggingface"], 
+                       choices=["openai", "anthropic", "huggingface", "ollama"], 
                        default="openai",
                        help="LLM provider")
     parser.add_argument("--llm-model", default="gpt-4o",
@@ -62,6 +69,8 @@ Examples:
     parser.add_argument("--api-key", help="API key for LLM provider")
     parser.add_argument("--hf-token", help="HuggingFace token (for HuggingFace provider)")
     parser.add_argument("--base-url", help="Base URL for LLM API (for HuggingFace provider)")
+    parser.add_argument("--ollama-url", default="http://localhost:11434",
+                       help="Ollama server URL (for Ollama provider)")
     
     # Processing configuration
     parser.add_argument("--max-workers", type=int, default=4,
@@ -92,6 +101,8 @@ Examples:
             config.llm.hf_token = args.hf_token
         if args.base_url:
             config.llm.base_url = args.base_url
+        if args.ollama_url:
+            config.llm.ollama_base_url = args.ollama_url
             
     else:
         # Manual configuration
@@ -101,7 +112,8 @@ Examples:
                 model=args.llm_model,
                 api_key=args.api_key,
                 hf_token=args.hf_token,
-                base_url=args.base_url
+                base_url=args.base_url,
+                ollama_base_url=args.ollama_url
             ),
             processing=ProcessingConfig(
                 output_dir=args.output_dir,

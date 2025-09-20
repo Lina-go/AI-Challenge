@@ -3,8 +3,8 @@ from typing import Optional, Dict, Any
 
 @dataclass
 class LLMConfig:
-    """Configuration for LLM providers - Extended for HuggingFace Router"""
-    provider: str = "openai"  # openai, anthropic, huggingface
+    """Configuration for LLM providers - Extended for HuggingFace Router and Ollama"""
+    provider: str = "openai"  # openai, anthropic, huggingface, ollama
     model: str = "gpt-4o"
     api_key: Optional[str] = None
     max_tokens: int = 4000
@@ -13,6 +13,10 @@ class LLMConfig:
     # HuggingFace specific configurations
     base_url: Optional[str] = None  # For HuggingFace Router
     hf_token: Optional[str] = None  # HuggingFace token
+    
+    # Ollama specific configurations
+    ollama_base_url: str = "http://localhost:11434"  # Ollama server URL
+    ollama_timeout: int = 120  # Timeout for Ollama requests
 
 @dataclass
 class ProcessingConfig:
@@ -49,6 +53,23 @@ class ExtractionConfig:
                 provider="huggingface", 
                 model="Qwen/Qwen2.5-VL-7B-Instruct",
                 base_url="https://router.huggingface.co/v1"
+            ),
+            
+            # Ollama models
+            "ollama-moondream": LLMConfig(
+                provider="ollama",
+                model="moondream:1.8b",
+                ollama_base_url="http://localhost:11434"
+            ),
+            "ollama-llava": LLMConfig(
+                provider="ollama", 
+                model="llava:7b",
+                ollama_base_url="http://localhost:11434"
+            ),
+            "ollama-llava-13b": LLMConfig(
+                provider="ollama",
+                model="llava:13b", 
+                ollama_base_url="http://localhost:11434"
             )
         }
         

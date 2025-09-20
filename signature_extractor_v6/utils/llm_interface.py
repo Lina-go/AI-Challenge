@@ -33,6 +33,13 @@ class LLMInterface:
                 base_url=base_url,
                 api_key=api_key
             )
+        elif self.config.provider.lower() == "ollama":
+            # Import ollama here to avoid dependency issues if not installed
+            try:
+                import ollama
+                return ollama
+            except ImportError:
+                raise ImportError("ollama package not installed. Install with: pip install ollama")
         else:
             raise ValueError(f"Unsupported LLM provider: {self.config.provider}")
     
@@ -42,6 +49,8 @@ class LLMInterface:
             return self._process_with_openai_compatible(image, prompt)
         elif self.config.provider.lower() == "anthropic":
             return self._process_with_anthropic(image, prompt)
+        elif self.config.provider.lower() == "ollama":
+            return self._process_with_ollama(image, prompt)
     
     def _process_with_openai_compatible(self, image: Image.Image, prompt: str) -> str:
         """Process with OpenAI or OpenAI-compatible APIs (like HuggingFace Router)"""
@@ -116,6 +125,47 @@ class LLMInterface:
         except Exception as e:
             logger.error(f"Error processing with Anthropic ({self.config.model}): {e}")
             raise
+    
+    def _process_with_ollama(self, image: Image.Image, prompt: str) -> str:
+        """Process with Ollama local models"""
+        import tempfile
+        import os
+        
+        try:
+            # Save image to temporary file (Ollama requires file path)
+            with tempfile.NamedTemporaryFile(suffix='.png', delete=False) as tmp_file:
+                image.save(tmp_file.name, format="PNG")
+                temp_image_path = tmp_file.name
+            
+            try:
+                # Call Ollama chat API
+                response = self.client.chat(
+                    model=self.config.model,
+                    messages=[
+                        {
+                            'role': 'user',
+                            'content': prompt,
+                            'images': [temp_image_path]
+                        }
+                    ],
+                    options={
+                        'temperature': self.config.temperature,
+                        'num_predict': self.config.max_tokens
+                    }
+                )
+                
+                return response['message']['content']
+                
+            finally:
+                # Clean up temporary file
+                try:
+                    os.unlink(temp_image_path)
+                except OSError:
+                    pass
+                    
+        except Exception as e:
+            logger.error(f"Error processing with Ollama ({self.config.model}): {e}")
+            raise
 
 def create_llm_interface(llm_config):
     """Factory function to create LLM interface"""
@@ -123,4 +173,4 @@ def create_llm_interface(llm_config):
 
 def get_available_providers():
     """Get list of available LLM providers"""
-    return ["openai", "anthropic", "huggingface"]
+    return ["openai", "anthropic", "huggingface", "ollama"]

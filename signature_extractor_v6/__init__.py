@@ -2,12 +2,13 @@
 Signature Extractor v3 - LLM-powered signature extraction from PDF documents.
 
 A modular framework for extracting signature metadata from modern slavery statements
-and other PDF documents using Large Language Models including open-source alternatives.
+and other PDF documents using Large Language Models including open-source alternatives
+and local models via Ollama.
 
 Key Features:
 - LLM-based signature detection and analysis
 - Multiple input sources (CSV, directory, URLs)
-- Support for commercial and open-source vision-language models
+- Support for commercial, open-source vision-language models, and local Ollama models
 - Structured output matching signature_columns.xlsx format
 - Progress tracking and comprehensive logging
 - Both CLI and programmatic interfaces
@@ -24,13 +25,31 @@ Example Usage:
         llm_model="zai-org/GLM-4.5V:novita"
     )
     
+    # Using Ollama Moondream model
+    results = extract_signatures_from_csv(
+        "statements.csv", "output/", 
+        llm_provider="ollama", 
+        llm_model="moondream:1.8b"
+    )
+    
+    # Using preset configurations
+    from signature_extractor_v3 import ExtractionConfig
+    config = ExtractionConfig.create_preset("ollama-moondream", output_dir="results/")
+    
     # Advanced usage with custom configuration
     from signature_extractor_v3 import (
         ExtractionConfig, LLMConfig, ProcessingConfig,
         ExtractionOrchestrator, CSVSourceAdapter
     )
     
-    config = ExtractionConfig.create_preset("glm-4.5v", output_dir="results/")
+    config = ExtractionConfig(
+        llm=LLMConfig(
+            provider="ollama",
+            model="moondream:1.8b",
+            ollama_base_url="http://localhost:11434"
+        ),
+        processing=ProcessingConfig(output_dir="results/")
+    )
     
     adapter = CSVSourceAdapter(config, "data.csv")
     orchestrator = ExtractionOrchestrator(config)
@@ -67,12 +86,6 @@ from .adapters import (
     URLSourceAdapter
 )
 
-#from .models import (
-#    ExtractionResult,
-#    SignatureData,
-#    DocumentMetadata
-#)
-
 from .utils import (
     ProgressTracker,
     setup_logging,
@@ -91,6 +104,7 @@ def extract_signatures_from_csv(
     api_key: str = None,
     hf_token: str = None,
     base_url: str = None,
+    ollama_url: str = "http://localhost:11434",
     **kwargs
 ) -> list:
     """
@@ -99,11 +113,12 @@ def extract_signatures_from_csv(
     Args:
         csv_path: Path to CSV file with PDF URLs
         output_dir: Output directory for results
-        llm_provider: LLM provider ("openai", "anthropic", "huggingface")
+        llm_provider: LLM provider ("openai", "anthropic", "huggingface", "ollama")
         llm_model: LLM model to use
         api_key: API key for LLM provider
         hf_token: HuggingFace token (for huggingface provider)
         base_url: Base URL for API (for huggingface provider)
+        ollama_url: Ollama server URL (for ollama provider)
         **kwargs: Additional configuration options
         
     Returns:
@@ -115,7 +130,8 @@ def extract_signatures_from_csv(
             model=llm_model,
             api_key=api_key,
             hf_token=hf_token,
-            base_url=base_url
+            base_url=base_url,
+            ollama_base_url=ollama_url
         ),
         processing=ProcessingConfig(
             output_dir=output_dir,
@@ -141,6 +157,7 @@ def extract_signatures_from_directory(
     api_key: str = None,
     hf_token: str = None,
     base_url: str = None,
+    ollama_url: str = "http://localhost:11434",
     **kwargs
 ) -> list:
     """
@@ -149,11 +166,12 @@ def extract_signatures_from_directory(
     Args:
         directory_path: Path to directory containing PDFs
         output_dir: Output directory for results
-        llm_provider: LLM provider ("openai", "anthropic", "huggingface")
+        llm_provider: LLM provider ("openai", "anthropic", "huggingface", "ollama")
         llm_model: LLM model to use
         api_key: API key for LLM provider
         hf_token: HuggingFace token (for huggingface provider)
         base_url: Base URL for API (for huggingface provider)
+        ollama_url: Ollama server URL (for ollama provider)
         **kwargs: Additional configuration options
         
     Returns:
@@ -167,7 +185,8 @@ def extract_signatures_from_directory(
             model=llm_model,
             api_key=api_key,
             hf_token=hf_token,
-            base_url=base_url
+            base_url=base_url,
+            ollama_base_url=ollama_url
         ),
         processing=ProcessingConfig(
             output_dir=output_dir,
@@ -210,11 +229,6 @@ __all__ = [
     "CSVSourceAdapter",
     "DirectorySourceAdapter",
     "URLSourceAdapter",
-    
-    # Data models
-    "ExtractionResult",
-    "SignatureData",
-    "DocumentMetadata",
     
     # Utilities
     "ProgressTracker",
