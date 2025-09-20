@@ -1,4 +1,4 @@
-# PDF Processor v2
+# PDF Processor
 
 Document analysis and signature extraction framework with LLM content extraction from PDF documents
 
