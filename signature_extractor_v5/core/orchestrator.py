@@ -4,6 +4,7 @@
 import logging
 from typing import List, Dict, Any
 from pathlib import Path
+from datetime import datetime
 
 from ..config import ExtractionConfig
 from .document_processor import DocumentProcessor

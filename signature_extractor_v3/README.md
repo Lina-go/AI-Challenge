@@ -1,4 +1,4 @@
-# Signature Extractor v2
+# Signature Extractor
 
 LLM-signature extraction from PDF documents with modular architecture and comprehensive output.
 

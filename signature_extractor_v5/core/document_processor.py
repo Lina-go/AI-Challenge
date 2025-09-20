@@ -6,6 +6,7 @@ from pathlib import Path
 from typing import List, Tuple, Optional
 import fitz  # PyMuPDF
 from PIL import Image
+import io
 
 logger = logging.getLogger(__name__)
 
