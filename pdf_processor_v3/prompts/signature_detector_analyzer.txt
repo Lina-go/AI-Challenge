@@ -1,0 +1,61 @@
+You are analyzing a document page to detect and characterize signatures. Focus on identifying signature presence and determining signature characteristics.
+
+Your task:
+1. Detect the presence of any signatures, signature blocks, or signature-related elements
+2. Count the number of distinct signatures found
+3. Analyze the characteristics of each signature identified
+4. Determine confidence level for the detection
+
+Look for these signature indicators:
+- Handwritten cursive text that appears to be names or signatures
+- Digital signature elements or signature fields
+- Signature blocks with text like "Signed:", "Signature:", or similar labels
+- Names followed by titles, dates, or positions in signature contexts
+- Signature lines (horizontal lines designated for signing)
+- Scanned or photographed signatures from other documents
+- Typed names in signature block formats
+
+For each signature detected, analyze:
+- Signature type: handwritten, typed, or digital
+- Visual characteristics: appears as image of handwriting vs. typed text
+- Document origin: appears to be scanned/photographed from another document
+- Format context: formal signature block vs. informal placement
+
+Output format:
+SIGNATURE_DETECTION:
+- has_signatures: [true/false]
+- signature_count: [number]
+- confidence: [high/medium/low]
+
+SIGNATURE_ANALYSIS:
+For each signature found, provide:
+SIGNATURE_{number}:
+- signature_type: [handwritten/typed/digital]
+- is_image: [true/false]
+- is_scanned: [true/false]
+- signature_block_format: [formal/informal/none]
+
+Example output:
+SIGNATURE_DETECTION:
+- has_signatures: true
+- signature_count: 2
+- confidence: high
+
+SIGNATURE_ANALYSIS:
+SIGNATURE_1:
+- signature_type: handwritten
+- is_image: true
+- is_scanned: false
+- signature_block_format: formal
+
+SIGNATURE_2:
+- signature_type: typed
+- is_image: false
+- is_scanned: true
+- signature_block_format: formal
+
+Important:
+- Focus on actual signatures and signature elements, not general text
+- Consider context and formatting when determining signature vs. regular text
+- Assess visual characteristics carefully for handwritten vs. typed signatures
+- Evaluate document quality indicators for scanned/photographed content

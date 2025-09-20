@@ -1,0 +1,27 @@
+=== PAGE 3 - TEXT PROMPT OUTPUT ===
+
+```markdown
+# SUPPLY CHAIN
+
+Supply chains in the defence industry are characterised by complex relationships and limited supply markets constrained by proprietary products or technology and specialised certifications. The high proportion of specific materials and processes combined with a broad product range leads to a significant proportion of single and sole-sourcing as only few companies have the capability to manufacture the products or command the processes. Military authorities as end users of our products qualify defence products based on performance, the manufacturing process, manufacturing location and suppliers. Specific legislation, such as the War Weapons Control Act, the Foreign Trade and Payments Act and the International Traffic in Arms Regulations (ITAR), to cite just a few, must be taken into consideration when procuring defence technology. The supply chain ranges from Tier 1 (direct components) through Tier 2 and Tier N (Removed from raw materials suppliers).
+
+The Rheinmetall Group Purchasing department is responsible for cooperation with suppliers. The aim of Group Purchasing is to establish and maintain long-term supplier relationships. The purchasing organization is controlled by the Group Chief Purchasing Officer (CPO). It is managed via a matrix structure, with entity based procurement departments reporting to the CPO, supported by centralized procurement teams, responsible for Environment, Social and Governance (ESG) or Commodity Management. Further support is provided by Rheinmetall Group Purchasing Council (RGP Council). Rheinmetall does not tolerate human rights violations and strives to counteract any potentially negative impacts on value chain workers within its own sphere of influence. Guidelines such as the Supplier Code of Conduct (SCoC) and specifications such as the instruction on supplier screening in accordance with the German Supply Chain Due Diligence Act (LkSG) state that Rheinmetall expects suppliers to have the same understanding with regard to respecting human rights, for example by agreeing on disclosure clauses. The aforementioned guideline or requirement refers to workers in the upstream value chain (Tier 1) with whom contractual relationships exist. Human rights violations can affect workers in the far upstream value chain who are involved in the extraction or processing of raw materials in the relevant regions. Rheinmetall's responsible Minerals Sourcing Policy from Y2022 ensures that no raw materials are sourced from conflict regions.
+
+In addition to the SCoC, which must be signed by the Tier 1 supplier at the beginning of each business relationship, Group Purchasing department has implemented a comprehensive supplier risk process. The ESG Supply Chain team at Group headquarters carries out regular risk analyses together with the divisions. The corresponding regular reporting takes place on a quarterly basis and is presented to the Chief Purchasing Officer and the divisional purchasing managers as part of the operational Rheinmetall Group Purchasing Council. The RGP Council also decides on topics such as possible adjustments to supplier risk analysis. The risk analysis is supported by the software provider EcoVadis and is carried out on an ongoing basis. In addition, the Risk Management Council (a cross-divisional council of the Rheinmetall Group) is working on new criteria and processes to improve due diligence checks.
+
+The SCoC and the instructions for supplier audits in accordance with the German Supply Chain Duties Act are updated regularly by Group Purchasing. Both documents have an effect on Tier 1 to Tier N suppliers and their employees. At the same time, they are a central working tool for those at Rheinmetall who make purchasing decisions. Signing the SCoC is mandatory for direct suppliers as part of the onboarding process. Only in exceptional cases and in consultation with the legal department or compliance can minor adjustments to the SCoC or equivalent agreements be accepted as an alternative. New supplier systems are checked and approved at divisional level.
+
+The RGP Council is responsible for its implementation. The SCoC refers to the OECD Guidelines for Multinational Enterprises, the ILO Core Conventions, the United Nations Sustainable Development Goals, the 10 principles of the UN Global Compact and the Diversity Charter, which stand for the prevention of human rights violations such as human trafficking and child and forced labour.
+
+We have and continue to expand and qualify a broad network in Australia to support delivery of Australian Industrial Capability commitments and introduction of Australian suppliers to the Rheinmetall Global Supply Chain. Rheinmetall Group products are dependent on a highly qualified and well-qualified supply base. The Group seeks a high degree of localisation and works with suppliers with recognised standards, such as ISO 9001, from its suppliers. Environment, Social Responsibility and Governance criteria form part of the evaluation and selection process when considering new supplier relationships as well as ongoing surveillance.
+
+[FIGURE_1]
+
+1. Rheinmetall Defence Australia Managing Director with RGM and Supacat representatives and Land Forces in Melbourne 2024.
+
+2. Rheinmetall Defence Australia Managing Director with Supacat representatives and Land Forces in Melbourne 2024.
+
+[FIGURE_2]
+
+[FIGURE_3]
+```
