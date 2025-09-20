@@ -169,7 +169,7 @@ def main():
     if args.preset:
         presets_to_test = [args.preset]
     elif args.cpu_only:
-        presets_to_test = ["cpu-smolvlm", "cpu-llava-tiny", "cpu-granite", "edge-tiny"]
+        presets_to_test = ["cpu-florence", "cpu-minicpm", "cpu-qwen", "edge-florence"]
     elif args.benchmark:
         # Test a representative sample
         if system_info['cuda_available']:
@@ -185,10 +185,10 @@ def main():
         presets_to_test = [config.llm.model]  # This won't work as expected, need to fix
         # For now, use a safe default
         if system_info['cuda_available']:
-            presets_to_test = ["smolvlm"]
+            presets_to_test = ["minicpm"]
         else:
-            presets_to_test = ["cpu-smolvlm"]
-    
+            presets_to_test = ["cpu-florence"]
+
     # Run tests
     num_runs = 1 if args.quick else 3
     all_results = []
