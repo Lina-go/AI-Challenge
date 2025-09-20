@@ -1,0 +1,5 @@
+Collecting PyMuPDF
+  Using cached pymupdf-1.26.4-cp39-abi3-win_amd64.whl.metadata (3.4 kB)
+Using cached pymupdf-1.26.4-cp39-abi3-win_amd64.whl (18.7 MB)
+Installing collected packages: PyMuPDF
+Successfully installed PyMuPDF-1.26.4
