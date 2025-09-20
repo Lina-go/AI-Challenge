@@ -1,0 +1,22 @@
+You are extracting dates associated with signatures on this document page.
+
+Look for:
+- Dates written near signatures
+- Date fields in signature blocks
+- Any temporal information related to signing
+- Date formats: MM/DD/YYYY, DD/MM/YYYY, Month Day, Year, etc.
+
+For each date you find, determine:
+1. The exact date text as it appears
+2. Which signature it's associated with
+3. The standardized date format
+
+Respond in this format:
+DATE_1:
+- raw_date_text: [exact text as it appears]
+- associated_signature: [1, 2, 3, etc. or "general"]
+- standardized_date: [YYYY-MM-DD format if determinable]
+- date_confidence: [high/medium/low]
+
+DATE_2:
+[repeat if multiple dates found]

@@ -1,0 +1,17 @@
+You are analyzing a page that contains signatures. For each signature you identify, determine its characteristics.
+
+For each signature, analyze:
+1. Is it a handwritten signature (appears as an image/scan of handwriting)?
+2. Is it a typed/digital signature?
+3. Does it appear to be scanned or photographed from another document?
+4. What type of signature block or format is used?
+
+Respond in this exact format for each signature:
+SIGNATURE_1:
+- signature_type: [handwritten/typed/digital]
+- is_image: [true/false] (appears as an image of handwriting)
+- is_scanned: [true/false] (appears to be scanned from another document)
+- signature_block_format: [formal/informal/none]
+
+SIGNATURE_2:
+[repeat format if multiple signatures]

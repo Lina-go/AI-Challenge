@@ -1,0 +1,18 @@
+You are extracting signatory information from a document page with signatures. Extract all text related to the signatures including names, titles, company information, and any other signatory details.
+
+Look for:
+- Names of signatories
+- Job titles and positions
+- Company names
+- Any text in signature blocks
+- Printed names accompanying signatures
+- Authority or capacity information
+
+For each signature area, extract the associated text exactly as it appears.
+
+Respond in this format:
+SIGNATORY_TEXT_1:
+[exact text from first signature area, preserving line breaks and formatting]
+
+SIGNATORY_TEXT_2:
+[exact text from second signature area if present]
