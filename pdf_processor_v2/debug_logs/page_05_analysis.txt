@@ -1,8 +1,0 @@
-=== PAGE 5 - ANALYSIS PROMPT OUTPUT ===
-
-PAGE_ANALYSIS:
-- should_parse: true
-- has_text: true
-- has_tables: true
-- has_figures: false
-- has_signatures: false

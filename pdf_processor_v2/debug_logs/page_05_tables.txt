@@ -1,6 +1,0 @@
-=== PAGE 5 - TABLES PROMPT OUTPUT ===
-
-TABLE_1
-| MSCI ESG | ISS ESG | S&P Global | Refinitiv ESG Company Score | ESG Book | Sustainalytics ESG Risk Rating |
-|----------|---------|------------|-----------------------------|----------|-------------------------------|
-| AA (Scale: CCC-AAA); only 1 out of 34 companies score higher | C (Scale: D- - A+); only 2 out of 72 companies score higher | 34 (Scale 0–100); industry average 29 | 81 | 56.45 | 26.8 |

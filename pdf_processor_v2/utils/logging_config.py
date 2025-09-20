@@ -1,7 +1,3 @@
-"""
-Logging configuration utilities.
-"""
-
 import logging
 import logging.config
 from pathlib import Path
@@ -51,7 +47,7 @@ def setup_logging(
             }
         },
         'loggers': {
-            'pdf_processor': {
+            'pdf_processor_v2': {
                 'level': level,
                 'handlers': ['console'],
                 'propagate': False
@@ -73,33 +69,7 @@ def setup_logging(
             'maxBytes': 10485760,  # 10MB
             'backupCount': 5
         }
-        config['loggers']['pdf_processor']['handlers'].append('file')
+        config['loggers']['pdf_processor_v2']['handlers'].append('file')
         config['root']['handlers'].append('file')
     
     logging.config.dictConfig(config)
-
-def get_logger(name: str) -> logging.Logger:
-    """
-    Get a logger instance for the specified module
-    
-    Args:
-        name: Logger name (typically __name__)
-        
-    Returns:
-        Logger instance
-    """
-    return logging.getLogger(f"pdf_processor.{name}")
-
-def set_log_level(level: str):
-    """
-    Change the logging level for all pdf_processor loggers
-    
-    Args:
-        level: New logging level (DEBUG, INFO, WARNING, ERROR)
-    """
-    logger = logging.getLogger('pdf_processor')
-    logger.setLevel(getattr(logging, level.upper()))
-    
-    # Update all handlers
-    for handler in logger.handlers:
-        handler.setLevel(getattr(logging, level.upper()))

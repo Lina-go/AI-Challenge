@@ -1,6 +1,12 @@
 """
-PDF Processor - Unified document analysis and signature extraction framework
+Unified document analysis and signature extraction framework
 """
+from .core.document_processor import DocumentProcessor
+from .core.llm_interface import create_llm_interface
+from .core.orchestrator import SignatureOrchestrator
+from .adapters.csv_adapter import CSVSourceAdapter
+from .core.orchestrator import SignatureOrchestrator
+from .adapters.directory_adapter import DirectorySourceAdapter
 
 from .config import (
     ProcessorConfig,
@@ -12,13 +18,9 @@ from .config import (
 from .core import (
     DocumentProcessor,
     SignatureAnalyzer,
-    LLMInterface
-)
-
-from .core.llm_factory import (
-    create_llm_interface,
-    get_available_providers,
-    get_recommended_provider
+    MainOrchestrator,
+    SignatureOrchestrator,
+    DocumentOrchestrator
 )
 
 from .adapters import (
@@ -33,7 +35,7 @@ from .utils import (
     load_prompt
 )
 
-# Convenience functions for common use cases
+# Common use case functions
 def process_document(
     pdf_path: str,
     output_path: str = None,
@@ -54,9 +56,6 @@ def process_document(
     Returns:
         DocumentResult object
     """
-    from .core.document_processor import DocumentProcessor
-    from .core.llm_factory import create_llm_interface
-    
     # Create configuration
     config = ProcessorConfig.create_preset(
         llm_provider if llm_provider in ["openai", "anthropic"] else "openai"
@@ -69,7 +68,7 @@ def process_document(
     
     # Process document
     llm = create_llm_interface(config.llm)
-    processor = DocumentProcessor(llm)
+    processor = DocumentProcessor(config)
     result = processor.process_document(pdf_path)
     
     # Save if output path specified
@@ -98,18 +97,16 @@ def extract_signatures_from_csv(
     Returns:
         List of extraction results
     """
-    from .main import SignatureOrchestrator
-    
     # Create configuration
     if llm_provider in ["openai", "anthropic"]:
         config = ProcessorConfig.create_signature_preset(llm_provider, output_dir)
     else:
-        # Use open-source preset
+        # Use preset mapping for other providers
         preset_map = {
-            "huggingface": "qwen-medium",
-            "ollama": "ollama-llava"
+            "huggingface": "glm-4.5v",
+            "ollama": "ollama-moondream"
         }
-        preset = preset_map.get(llm_provider, "qwen-medium")
+        preset = preset_map.get(llm_provider, "glm-4.5v")
         config = ProcessorConfig.create_signature_preset(preset, output_dir)
         config.llm.provider = llm_provider
     
@@ -148,17 +145,16 @@ def extract_signatures_from_directory(
     Returns:
         List of extraction results
     """
-    from .main import SignatureOrchestrator
     
     # Create configuration
     if llm_provider in ["openai", "anthropic"]:
         config = ProcessorConfig.create_signature_preset(llm_provider, output_dir)
     else:
         preset_map = {
-            "huggingface": "qwen-medium",
-            "ollama": "ollama-llava"
+            "huggingface": "glm-4.5v",
+            "ollama": "ollama-moondream"
         }
-        preset = preset_map.get(llm_provider, "qwen-medium")
+        preset = preset_map.get(llm_provider, "glm-4.5v")
         config = ProcessorConfig.create_signature_preset(preset, output_dir)
         config.llm.provider = llm_provider
     
@@ -177,9 +173,6 @@ def extract_signatures_from_directory(
     
     return orchestrator.process_multiple_sources(sources)
 
-__version__ = "2.0.0"
-__author__ = "PDF Processor Team"
-
 __all__ = [
     # Configuration classes
     "ProcessorConfig",
@@ -190,12 +183,9 @@ __all__ = [
     # Core components
     "DocumentProcessor",
     "SignatureAnalyzer", 
-    "LLMInterface",
-    
-    # Factory functions
-    "create_llm_interface",
-    "get_available_providers",
-    "get_recommended_provider",
+    "MainOrchestrator",
+    "SignatureOrchestrator",
+    "DocumentOrchestrator",
     
     # Source adapters
     "CSVSourceAdapter",
