@@ -22,7 +22,6 @@ class DirectorySourceAdapter(BaseSourceAdapter):
     def get_sources(self) -> List[Dict[str, Any]]:
         """Scan directory for PDFs."""
         pdf_files = list(self.directory_path.glob("*.pdf"))
-        pdf_files.extend(list(self.directory_path.glob("*.PDF")))
         
         sources = []
         for idx, pdf_file in enumerate(sorted(pdf_files)):
