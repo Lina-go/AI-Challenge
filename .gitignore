@@ -1,3 +1,4 @@
+signature_results/*
 .idea
 .ipynb_checkpoints
 .mypy_cache
