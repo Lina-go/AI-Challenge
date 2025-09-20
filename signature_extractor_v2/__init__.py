@@ -62,11 +62,11 @@ from .adapters import (
     URLSourceAdapter
 )
 
-from .models import (
-    ExtractionResult,
-    SignatureData,
-    DocumentMetadata
-)
+#from .models import (
+#    ExtractionResult,
+#    SignatureData,
+#    DocumentMetadata
+#)
 
 from .utils import (
     ProgressTracker,
