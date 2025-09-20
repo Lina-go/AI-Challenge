@@ -20,11 +20,11 @@ class CSVSourceAdapter(BaseSourceAdapter):
         self.download_dir.mkdir(parents=True, exist_ok=True)
     
     def get_pdf_sources(self) -> List[Dict[str, Any]]:
-        """Read CSV and return list of PDF sources"""
+        """Read CSV and return list of PDFs"""
         try:
             df = pd.read_csv(self.csv_path)
             
-            # Expected columns: pdf_url, document_name (optional)
+            # Expected columns: pdf_url, document_name
             if 'pdf_url' not in df.columns:
                 raise ValueError("CSV must contain 'pdf_url' column")
             

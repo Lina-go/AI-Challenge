@@ -25,12 +25,10 @@ class DirectorySourceAdapter(BaseSourceAdapter):
         try:
             # Find all PDF files
             pdf_files = list(self.directory_path.glob("*.pdf"))
-            pdf_files.extend(list(self.directory_path.glob("*.PDF")))
             
-            # Also check subdirectories if recursive processing is enabled
+            # Check subdirectories if recursive processing is enabled
             if self.config.source_config and self.config.source_config.get('recursive', False):
                 pdf_files.extend(list(self.directory_path.rglob("*.pdf")))
-                pdf_files.extend(list(self.directory_path.rglob("*.PDF")))
             
             # Remove duplicates and sort
             pdf_files = sorted(list(set(pdf_files)))

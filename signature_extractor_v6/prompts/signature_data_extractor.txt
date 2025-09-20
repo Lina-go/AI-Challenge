@@ -1,4 +1,4 @@
-You are extracting comprehensive signature data from a document page that contains signatures. Focus on extracting all signatory information and associated temporal data.
+You are extracting signature data from a document page that contains signatures. Focus on extracting all signatory information and associated temporal data.
 
 Your task:
 1. Extract all text related to signatures including names, titles, company information

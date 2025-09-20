@@ -2,7 +2,6 @@ import logging
 import base64
 import os
 from io import BytesIO
-from typing import Any, Dict
 from PIL import Image
 import openai
 import anthropic
@@ -10,7 +9,7 @@ import anthropic
 logger = logging.getLogger(__name__)
 
 class LLMInterface:
-    """Interface for different LLM providers"""
+    """Simple interface for different LLM providers"""
     
     def __init__(self, llm_config):
         self.config = llm_config
@@ -18,153 +17,112 @@ class LLMInterface:
     
     def _setup_client(self):
         """Initialize the appropriate LLM client"""
-        if self.config.provider.lower() == "openai":
+        provider = self.config.provider.lower()
+        
+        if provider == "openai":
             return openai.OpenAI(api_key=self.config.api_key)
-        elif self.config.provider.lower() == "anthropic":
+        
+        elif provider == "anthropic":
             return anthropic.Anthropic(api_key=self.config.api_key)
-        elif self.config.provider.lower() == "huggingface":
-            # Use HuggingFace Router with OpenAI-compatible interface
+        
+        elif provider == "huggingface":
             api_key = self.config.hf_token or self.config.api_key or os.environ.get("HF_TOKEN")
-            if not api_key:
-                raise ValueError("HuggingFace token required. Set HF_TOKEN environment variable or provide hf_token in config")
-            
             base_url = self.config.base_url or "https://router.huggingface.co/v1"
-            return openai.OpenAI(
-                base_url=base_url,
-                api_key=api_key
-            )
-        elif self.config.provider.lower() == "ollama":
-            # Import ollama here to avoid dependency issues if not installed
-            try:
-                import ollama
-                return ollama
-            except ImportError:
-                raise ImportError("ollama package not installed. Install with: pip install ollama")
+            return openai.OpenAI(base_url=base_url, api_key=api_key)
+        
+        elif provider == "ollama":
+            import ollama
+            return ollama
+        
         else:
-            raise ValueError(f"Unsupported LLM provider: {self.config.provider}")
+            raise ValueError(f"Unsupported provider: {provider}")
     
     def process_image_with_prompt(self, image: Image.Image, prompt: str) -> str:
         """Process image with text prompt using LLM vision capabilities"""
-        if self.config.provider.lower() in ["openai", "huggingface"]:
-            return self._process_with_openai_compatible(image, prompt)
-        elif self.config.provider.lower() == "anthropic":
-            return self._process_with_anthropic(image, prompt)
-        elif self.config.provider.lower() == "ollama":
-            return self._process_with_ollama(image, prompt)
+        provider = self.config.provider.lower()
+        
+        if provider in ["openai", "huggingface"]:
+            return self._openai_compatible(image, prompt)
+        elif provider == "anthropic":
+            return self._anthropic(image, prompt)
+        elif provider == "ollama":
+            return self._ollama(image, prompt)
     
-    def _process_with_openai_compatible(self, image: Image.Image, prompt: str) -> str:
-        """Process with OpenAI or OpenAI-compatible APIs (like HuggingFace Router)"""
-        # Convert image to base64
+    def _openai_compatible(self, image: Image.Image, prompt: str) -> str:
+        """OpenAI or HuggingFace Router"""
+        # Convert to base64
         buffered = BytesIO()
         image.save(buffered, format="PNG")
         img_str = base64.b64encode(buffered.getvalue()).decode()
         
-        try:
-            response = self.client.chat.completions.create(
-                model=self.config.model,
-                messages=[
-                    {
-                        "role": "user",
-                        "content": [
-                            {"type": "text", "text": prompt},
-                            {
-                                "type": "image_url",
-                                "image_url": {
-                                    "url": f"data:image/png;base64,{img_str}"
-                                }
-                            }
-                        ]
-                    }
-                ],
-                max_tokens=self.config.max_tokens,
-                temperature=self.config.temperature
-            )
-            
-            return response.choices[0].message.content
-            
-        except Exception as e:
-            logger.error(f"Error processing with {self.config.provider} ({self.config.model}): {e}")
-            raise
+        response = self.client.chat.completions.create(
+            model=self.config.model,
+            messages=[{
+                "role": "user",
+                "content": [
+                    {"type": "text", "text": prompt},
+                    {"type": "image_url", "image_url": {"url": f"data:image/png;base64,{img_str}"}}
+                ]
+            }],
+            max_tokens=self.config.max_tokens,
+            temperature=self.config.temperature
+        )
+        
+        return response.choices[0].message.content
     
-    def _process_with_anthropic(self, image: Image.Image, prompt: str) -> str:
-        """Process with Anthropic Claude Vision"""
-        # Convert image to base64
+    def _anthropic(self, image: Image.Image, prompt: str) -> str:
+        """Anthropic Claude Vision"""
         buffered = BytesIO()
         image.save(buffered, format="PNG")
-        img_bytes = buffered.getvalue()
-        img_b64 = base64.b64encode(img_bytes).decode()
+        img_b64 = base64.b64encode(buffered.getvalue()).decode()
         
-        try:
-            message = self.client.messages.create(
-                model=self.config.model,
-                max_tokens=self.config.max_tokens,
-                temperature=self.config.temperature,
-                messages=[
+        message = self.client.messages.create(
+            model=self.config.model,
+            max_tokens=self.config.max_tokens,
+            temperature=self.config.temperature,
+            messages=[{
+                "role": "user",
+                "content": [
                     {
-                        "role": "user",
-                        "content": [
-                            {
-                                "type": "image",
-                                "source": {
-                                    "type": "base64",
-                                    "media_type": "image/png",
-                                    "data": img_b64
-                                }
-                            },
-                            {
-                                "type": "text", 
-                                "text": prompt
-                            }
-                        ]
-                    }
-                ]
-            )
-            
-            return message.content[0].text
-            
-        except Exception as e:
-            logger.error(f"Error processing with Anthropic ({self.config.model}): {e}")
-            raise
-    
-    def _process_with_ollama(self, image: Image.Image, prompt: str) -> str:
-        """Process with Ollama local models"""
-        import tempfile
-        import os
-        
-        try:
-            # Save image to temporary file (Ollama requires file path)
-            with tempfile.NamedTemporaryFile(suffix='.png', delete=False) as tmp_file:
-                image.save(tmp_file.name, format="PNG")
-                temp_image_path = tmp_file.name
-            
-            try:
-                # Call Ollama chat API
-                response = self.client.chat(
-                    model=self.config.model,
-                    messages=[
-                        {
-                            'role': 'user',
-                            'content': prompt,
-                            'images': [temp_image_path]
+                        "type": "image",
+                        "source": {
+                            "type": "base64",
+                            "media_type": "image/png",
+                            "data": img_b64
                         }
-                    ],
-                    options={
-                        'temperature': self.config.temperature,
-                        'num_predict': self.config.max_tokens
-                    }
-                )
-                
-                return response['message']['content']
-                
-            finally:
-                try:
-                    os.unlink(temp_image_path)
-                except OSError:
-                    pass
-                    
-        except Exception as e:
-            logger.error(f"Error processing with Ollama ({self.config.model}): {e}")
-            raise
+                    },
+                    {"type": "text", "text": prompt}
+                ]
+            }]
+        )
+        
+        return message.content[0].text
+    
+    def _ollama(self, image: Image.Image, prompt: str) -> str:
+        """Ollama local models"""
+        import tempfile
+        
+        # Save image temporarily
+        with tempfile.NamedTemporaryFile(suffix='.png', delete=False) as tmp_file:
+            image.save(tmp_file.name, format="PNG")
+            temp_path = tmp_file.name
+        
+        response = self.client.chat(
+            model=self.config.model,
+            messages=[{
+                'role': 'user',
+                'content': prompt,
+                'images': [temp_path]
+            }],
+            options={
+                'temperature': self.config.temperature,
+                'num_predict': self.config.max_tokens
+            }
+        )
+        
+        # Clean up temp file
+        os.unlink(temp_path)
+        return response['message']['content']
 
 def create_llm_interface(llm_config):
     """Factory function to create LLM interface"""

@@ -35,12 +35,12 @@ class DataProcessor:
         return processed_results
     
     def _process_single_signature(self, signature: Dict[str, Any]) -> Dict[str, Any]:
-        """Process a single signature record"""
+        """Process a single signature """
         
-        # Extract and clean signatory text
+        # Extract and clean text
         signatory_text = self._clean_signatory_text(signature.get('signatory_text', ''))
         
-        # Extract structured information from signatory text
+        # Extract structured information from text
         name_info = self._extract_name_info(signatory_text)
         title_info = self._extract_title_info(signatory_text)
         company_info = self._extract_company_info(signatory_text)
@@ -156,7 +156,6 @@ class DataProcessor:
         if not raw_date:
             return {'formatted_date': ''}
         
-        # Try to standardize date format
         try:
             # If already in YYYY-MM-DD format
             if re.match(r'\d{4}-\d{2}-\d{2}', raw_date):

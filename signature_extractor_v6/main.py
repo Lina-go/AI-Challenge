@@ -11,35 +11,8 @@ from .utils.logging_config import setup_logging
 
 def main():
     parser = argparse.ArgumentParser(
-        description="PDF Signature Extractor v3 - LLM-powered signature extraction",
-        formatter_class=argparse.RawDescriptionHelpFormatter,
-        epilog="""
-Examples:
-  # Extract from CSV file with OpenAI GPT-4o
-  python -m signature_extractor_v3.main csv --source statements.csv
-  
-  # Extract using HuggingFace GLM-4.5V model
-  python -m signature_extractor_v3.main csv --source statements.csv --preset glm-4.5v
-  
-  # Extract using Ollama Moondream model
-  python -m signature_extractor_v3.main csv --source statements.csv --preset ollama-moondream
-  
-  # Extract from directory using Ollama preset
-  python -m signature_extractor_v3.main directory --source /path/to/pdfs/ --preset ollama-llava
-  
-  # Manual Ollama configuration
-  python -m signature_extractor_v3.main csv --source statements.csv --llm-provider ollama --llm-model "moondream:1.8b"
-  
-  # Manual HuggingFace configuration
-  python -m signature_extractor_v3.main csv --source statements.csv --llm-provider huggingface --llm-model "zai-org/GLM-4.5V:novita"
-  
-  # Extract from URL list with custom config
-  python -m signature_extractor_v3.main urls --source urls.txt --output-dir results/ --llm-model gpt-4o
-  
-  # Use Anthropic Claude
-  python -m signature_extractor_v3.main csv --source data.csv --preset anthropic
-        """
-    )
+        description="PDF Signature Extractor",
+        formatter_class=argparse.RawDescriptionHelpFormatter)
     
     # Source configuration
     parser.add_argument("source_type", choices=["csv", "directory", "urls"],

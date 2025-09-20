@@ -3,7 +3,7 @@ from typing import Optional, Dict, Any
 
 @dataclass
 class LLMConfig:
-    """Configuration for LLM providers - Extended for HuggingFace Router and Ollama"""
+    """Configuration for LLM providers"""
     provider: str = "openai"  # openai, anthropic, huggingface, ollama
     model: str = "gpt-4o"
     api_key: Optional[str] = None
@@ -15,7 +15,7 @@ class LLMConfig:
     hf_token: Optional[str] = None  # HuggingFace token
     
     # Ollama specific configurations
-    ollama_base_url: str = "http://localhost:11434"  # Ollama server URL
+    ollama_base_url: str = "http://localhost:11434"
     ollama_timeout: int = 120  # Timeout for Ollama requests
 
 @dataclass
