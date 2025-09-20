@@ -1,5 +1,5 @@
 """
-Document-level processing logic for PDF pipeline with integrated signature extraction.
+Document-level processing logic for PDF pipeline.
 """
 
 import logging
@@ -16,7 +16,7 @@ logger = logging.getLogger(__name__)
 
 
 class DocumentProcessor:
-    """Handles processing of complete PDF documents with integrated signature extraction."""
+    """Handles processing of complete PDF documents."""
     
     def __init__(self, config, debug_dir: Optional[str] = None):
         """
@@ -28,13 +28,11 @@ class DocumentProcessor:
         """
         self.config = config
         self.llm = create_llm_interface(config.llm)
-        
-        # Pass config to PageProcessor for signature extraction capability
-        self.page_processor = PageProcessor(self.llm, config, debug_dir)
+        self.page_processor = PageProcessor(self.llm, debug_dir)
     
     def process_document(self, pdf_path: str, output_dir: Optional[str] = None) -> DocumentResult:
         """
-        Process a complete PDF document through the full pipeline with integrated signature extraction.
+        Process a complete PDF document through the full pipeline.
         
         Args:
             pdf_path: Path to the PDF file
@@ -63,7 +61,6 @@ class DocumentProcessor:
             page_images = convert_pdf_to_images(pdf_path)
             
             processed_contents = []
-            signature_count = 0
             
             for page_number, image in page_images:
                 logger.info(f"Processing page {page_number}/{total_pages}")
@@ -74,11 +71,6 @@ class DocumentProcessor:
                     if page_content is not None:
                         result.add_page_content(page_content)
                         processed_contents.append(page_content)
-                        
-                        # Count signatures found
-                        if page_content.signature_mapping:
-                            signature_count += len(page_content.signature_mapping)
-                            
                     else:
                         result.skipped_pages += 1
                         logger.info(f"Skipped page {page_number} (no meaningful content)")
@@ -90,8 +82,6 @@ class DocumentProcessor:
             if processed_contents:
                 result.final_markdown = combine_page_contents(processed_contents)
                 logger.info(f"Successfully processed {result.processed_pages} pages, skipped {result.skipped_pages}")
-                if signature_count > 0:
-                    logger.info(f"Extracted signature information from {signature_count} signature blocks")
             else:
                 logger.warning("No content was successfully extracted from any page")
                 result.final_markdown = ""
@@ -131,7 +121,7 @@ class DocumentProcessor:
     
     def get_processing_summary(self, result: DocumentResult) -> str:
         """
-        Generate a human-readable processing summary with signature information.
+        Generate a human-readable processing summary.
         
         Args:
             result: DocumentResult to summarize
@@ -142,14 +132,9 @@ class DocumentProcessor:
         stats = result.processing_stats
         success_rate = result.get_success_rate()
         
-        # Count signatures in the final markdown
-        signature_sections = 0
-        if result.final_markdown:
-            signature_sections = len([line for line in result.final_markdown.split('\n') if 'Signature Information' in line])
-        
         summary = f"""
-PDF Processing Summary (with Signature Extraction)
-=================================================
+PDF Processing Summary
+=====================
 File: {result.pdf_path}
 Total Pages: {result.total_pages}
 Processed Pages: {result.processed_pages}
@@ -159,13 +144,10 @@ Success Rate: {success_rate:.1f}%
 Content Statistics:
 - Total Tables: {stats['total_tables']}
 - Total Figures: {stats['total_figures']}
-- Total Signatures Extracted: {signature_sections}
 - Total Placeholders: {stats['total_placeholders']}
 - Successful Integrations: {stats['successful_integrations']}
 
 Final Document Length: {len(result.final_markdown or '') // 1000}K characters
-
-Signature Extraction: {'Enabled' if self.config else 'Disabled'}
         """.strip()
         
         return summary

@@ -1,0 +1,34 @@
+=== PAGE 2 - TEXT PROMPT OUTPUT ===
+
+```markdown
+This Modern Slavery Statement is a joint statement of Rheinmetall Defence Australia Pty Ltd as the main operating entity in Australia and other Australian domiciled trading and wholly-owned Rheinmetall entities (as listed below and combined as “Rheinmetall Defence Australia; we”) for the financial year ending 31 December 2024:
+
+- **Rheinmetall Defence Australia Pty Ltd, (ACN 137 668 092);**
+- **Rheinmetall MAN Military Vehicles Australia Pty Ltd, (ACN 114 035 595);**
+- **Logistic Solutions Australasia Pty Ltd, (ACN 082 483 154).**
+
+This is Rheinmetall Defence Australia’s fifth annual Modern Slavery Statement that describes what the Rheinmetall entities in Australia together with overseas-located corporate roles (e.g. Compliance, Corporate Social Responsibility and Group Purchasing Department) within the Rheinmetall Group have actioned in 2024 and earlier to prevent Modern Slavery and human trafficking activities in its supply chain or in any other parts of the business.
+
+We are acting in consultation with related entities, which we own or control in Australia. Rheinmetall Defence Australia conducted a collaborative consultation process with all local entities to ensure alignment on modern slavery risks, mitigation measures, and reporting responsibilities across the entire corporate structure in Australia.
+
+Rheinmetall Defence Australia is headquartered at the Military Vehicle Centre of Excellence (MILVEHCOE) production facility in Redbank, Queensland and has offices in Adelaide, Melbourne and Wellington, New Zealand.
+
+## ORGANISATIONAL STRUCTURE
+
+Rheinmetall Defence Australia is a manufacturer and service provider in the defence sector that is wholly-owned by Rheinmetall Group “Group”. The Rheinmetall Group of companies consists of a group of international companies with leading technologies in the mobility and security industry segments. The Group comprises Rheinmetall Aktiengesellschaft (“Rheinmetall AG”), a publically listed corporation in Germany (RHM, DAX, ISIN: DE0007030009) and its subsidiaries. Rheinmetall AG is the parent company of the Rheinmetall Group and has its registered office in Duesseldorf, Germany.
+
+The Group at a glance has:
+
+- **29,322** Employees world wide
+- **A$ 16.3bn** (EUR 9.75bn) Aproximatе global annual consolidated sales
+- **175** subsidiaries in Europe, America, Asia, Africa and Australia
+- **860** Australian workforce employees at the end of December 2024
+
+Rheinmetall Defence Australia is organised into three main business divisions:
+
+- **Vehicles Systems**: production and development of military vehicles and turrets;
+- **Electronic Solutions**: production and engineering of simulation, training systems and fire control solutions; and
+- **Weapon and Ammunition**: production and engineering of armour systems and weapon assembly.
+
+[FIGURE_1]
+```

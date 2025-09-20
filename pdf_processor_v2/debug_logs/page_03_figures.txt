@@ -1,0 +1,23 @@
+=== PAGE 3 - FIGURES PROMPT OUTPUT ===
+
+FIGURE_1
+**Supply Chain Process Flow**
+1. Supplier Identification
+2. Establishing Supplier Relationships
+3. Regular Risk Analysis
+4. Reporting to Chief Purchasing Officer
+5. Supplier Risk Adjustments
+6. Ongoing Due Diligence Checks
+
+FIGURE_2
+**Organizational Structure - Rheinmetall Group Purchasing**
+- Chief Purchasing Officer (CPO)
+  - Entity-Based Procurement Departments
+  - Centralized Procurement Teams
+    - Environment, Social and Governance (ESG)
+    - Commodity Management
+  - Rheinmetall Group Purchasing Council (RGP Council)
+  - Risk Management Council
+
+FIGURE_3
+NOT_INFORMATIVE
