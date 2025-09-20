@@ -157,7 +157,6 @@ class LLMInterface:
                 return response['message']['content']
                 
             finally:
-                # Clean up temporary file
                 try:
                     os.unlink(temp_image_path)
                 except OSError:
