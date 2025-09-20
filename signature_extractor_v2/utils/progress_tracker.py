@@ -1,4 +1,3 @@
-# utils/progress_tracker.py
 import time
 import logging
 from typing import Optional
@@ -6,7 +5,7 @@ from typing import Optional
 logger = logging.getLogger(__name__)
 
 class ProgressTracker:
-    """Enhanced progress tracking with ETA and rate calculations"""
+    """Progress tracking"""
     
     def __init__(self, total_items: int, description: str = "Processing"):
         self.total_items = total_items
@@ -17,7 +16,7 @@ class ProgressTracker:
         self.last_update = self.start_time
     
     def update(self, increment: int = 1, error: bool = False):
-        """Update progress with enhanced metrics"""
+        """Update progress with metrics"""
         self.current_item += increment
         if error:
             self.errors += 1
@@ -27,12 +26,12 @@ class ProgressTracker:
         # Log every 10 items or significant milestones
         if (self.current_item % 10 == 0 or 
             self.current_item == self.total_items or
-            current_time - self.last_update > 30):  # Every 30 seconds
+            current_time - self.last_update > 30):
             
-            self._log_detailed_progress()
+            self._log_progress()
             self.last_update = current_time
     
-    def _log_detailed_progress(self):
+    def _log_progress(self):
         """Log detailed progress information"""
         elapsed = time.time() - self.start_time
         percentage = (self.current_item / self.total_items) * 100
