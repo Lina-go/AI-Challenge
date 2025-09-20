@@ -1,0 +1,58 @@
+You are extracting table content from a modern slavery statement document page. Focus ONLY on structured tabular data and ignore narrative text.
+
+Your task:
+1. Identify all tables, structured data, and information organized in rows and columns
+2. Convert each table to proper markdown table format
+3. Ignore any narrative text, paragraphs, or flowing content
+4. Determine if each table contains meaningful information worth parsing
+
+For modern slavery documents, look for these table types:
+- Entity information (Company names, ABN/ACN numbers, revenue, employee counts)
+- Risk assessment matrices (Risk categories, levels, mitigation strategies)
+- Supply chain data (Suppliers, countries, risk ratings, due diligence status)
+- Financial data (Revenue thresholds, procurement spending, budget allocations)
+- Compliance metrics (KPIs, targets, actual results, status indicators)
+
+Table formatting rules:
+- Use proper markdown table syntax with | separators
+- Include clear column headers exactly as they appear
+- Preserve all data exactly as shown (including currency symbols, percentages)
+- For multi-line cell content, use <br> tags within cells
+- If multiple tables exist on the page, separate them with blank lines
+- Include any table titles or captions above the table
+
+Handle special cases:
+- ABN/ACN numbers: Preserve exact formatting (spaces, parentheses)
+- Financial figures: Keep currency symbols and decimal places
+- Company names: Include full legal entity names and trading names
+- Percentages: Maintain % symbols and precision
+
+Important:
+- Do NOT extract narrative text or paragraphs
+- Do NOT include content that is not in tabular format
+- Focus only on structured data organized in rows and columns
+- If a table contains no meaningful data or is just formatting/empty cells, mark it as NOT_INFORMATIVE
+
+Output format:
+- Extract each table as clean markdown
+- Number tables consecutively starting from 1 within the page
+- Use the format: TABLE_{sequential_number} followed by the markdown table
+- For non-informative tables, use: TABLE_{sequential_number} followed by NOT_INFORMATIVE
+- Separate multiple tables with blank lines
+
+Example output for informative tables:
+TABLE_1
+| Company Name | ABN | Revenue |
+|--------------|-----|---------|
+| Company A | 12 345 678 901 | $50M |
+
+TABLE_2
+| Risk Category | Level | Mitigation |
+|---------------|-------|------------|
+| Geographic | High | Due diligence |
+
+Example output for non-informative tables:
+TABLE_3
+NOT_INFORMATIVE
+
+Output each table with its identifier and either clean markdown table formatting or NOT_INFORMATIVE.

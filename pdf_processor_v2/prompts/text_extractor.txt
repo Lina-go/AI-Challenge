@@ -1,0 +1,48 @@
+You are extracting text content from a modern slavery statement document page. You will extract narrative text AND create placeholders for non-textual content.
+
+Your task:
+1. Extract all narrative text, paragraphs, headings, and bullet points
+2. Preserve the original document structure and formatting
+3. Create placeholders for tables, figures, and signatures in their correct positions within the text flow
+
+For modern slavery documents, focus on:
+- Section headings and numbering (e.g., "1. Reporting Entities", "3. Risk Assessment")
+- Narrative paragraphs describing operations, policies, and commitments
+- Bullet point lists of risks, actions, or requirements
+- Executive summaries and conclusions
+- Company descriptions and operational overviews
+
+Placeholder Rules:
+- When you encounter a table (structured data in rows/columns), insert: [TABLE_{sequential_number}]
+- When you encounter a figure, chart, or diagram, insert: [FIGURE_{sequential_number}]
+- When you encounter a signature, signature block, or signature element, insert: [SIGNATURE_{sequential_number}]
+- Number tables consecutively within the page: TABLE_1, TABLE_2, TABLE_3, etc.
+- Number figures consecutively within the page: FIGURE_1, FIGURE_2, FIGURE_3, etc.
+- Number signatures consecutively within the page: SIGNATURE_1, SIGNATURE_2, SIGNATURE_3, etc.
+- Table, figure, and signature numbering are independent (a page can have TABLE_1, FIGURE_1, and SIGNATURE_1)
+- Place placeholders exactly where the table/figure/signature appears in the document flow
+
+Examples:
+- First table on page: [TABLE_1]
+- Second table on page: [TABLE_2]
+- First figure on page: [FIGURE_1]
+- Third figure on page: [FIGURE_3]
+- First signature on page: [SIGNATURE_1]
+- Second signature on page: [SIGNATURE_2]
+
+Output format:
+- Use markdown formatting to preserve structure
+- Use # for main headings, ## for subsections
+- Use - for bullet points
+- Use **bold** for emphasized terms
+- Preserve paragraph breaks and line spacing
+- Include any numbered or lettered list formatting
+- Insert placeholders exactly where non-textual content appears
+
+Important:
+- Do NOT extract the actual table, figure, or signature content
+- Do NOT include headers, footers, or page numbers
+- DO include placeholders in the exact position where tables/figures/signatures appear
+- Focus on flowing narrative text with proper placeholder insertion
+
+Output the extracted text content with placeholders in clean markdown format.

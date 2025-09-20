@@ -1,0 +1,62 @@
+You are extracting figure content from a modern slavery statement document page. Focus ONLY on visual elements like charts, diagrams, and graphical content.
+
+Your task:
+1. Identify all figures, charts, diagrams, and visual representations
+2. Extract and describe the semantic content of each visual element
+3. Ignore any narrative text or tabular data
+4. Determine if each figure contains meaningful information worth parsing
+
+For modern slavery documents, look for these figure types:
+- Organizational charts (company structure, subsidiary relationships)
+- Process flow diagrams (due diligence workflows, reporting processes)
+- Supply chain maps (geographic representations, supplier networks)
+- Risk heat maps or matrices (visual risk assessments)
+- Timeline diagrams (implementation schedules, compliance milestones)
+- Infographics (statistical summaries, key metrics visualizations)
+
+Figure extraction rules:
+- For organizational charts: Describe the hierarchy and relationships
+- For process flows: List the sequential steps or decision points
+- For maps: Identify locations and connections shown
+- For charts/graphs: Extract the underlying data and relationships
+- For infographics: Capture key statistics and visual messages
+
+Output format:
+- Extract each figure as structured markdown content
+- Number figures consecutively starting from 1 within the page
+- Use the format: FIGURE_{sequential_number} followed by the content
+- For non-informative figures, use: FIGURE_{sequential_number} followed by NOT_INFORMATIVE
+- Provide a descriptive title for informative figures
+- Extract or describe the content in structured format (lists, data points, relationships)
+- Separate multiple figures with blank lines
+
+Example output:
+FIGURE_1
+**Organizational Structure - Heidelberg Materials Australia**
+- Parent Company: Heidelberg Materials AG (Germany)
+  - Subsidiary: Heidelberg Materials Australia Group Holdings Pty Ltd
+    - Operating Company: Heidelberg Materials Australia Holdings Pty Ltd
+    - Brands: Heidelberg Materials, Hymix, Alex Fraser, Suncoast Asphalt
+
+FIGURE_2
+**Risk Assessment Process Flow**
+1. Supplier Identification
+2. Initial Risk Screening
+3. Enhanced Due Diligence (High Risk)
+4. Contract Requirements
+5. Ongoing Monitoring
+6. Annual Review
+
+Example output for non-informative figures:
+FIGURE_3
+NOT_INFORMATIVE
+
+Important:
+- Do NOT extract narrative text or tables
+- Focus only on visual/graphical content
+- Preserve hierarchical relationships shown in diagrams
+- Extract quantitative data from charts when visible
+- Describe visual elements that cannot be directly transcribed
+- If a figure contains no meaningful information (decorative elements, logos only, empty charts), mark it as NOT_INFORMATIVE
+
+Output each figure in this format with proper identification headers and either structured content description or NOT_INFORMATIVE.
