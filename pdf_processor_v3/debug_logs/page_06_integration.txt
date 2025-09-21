@@ -10,15 +10,13 @@ This statement was approved by the boards of each of the three reporting entitie
 
 The board of Rheinmetall Defence Australia approved this statement on 24 June 2025, the board of Rheinmetall MAN Military Vehicles Australia on 24 June 2025 and the board of Logistic Solutions Australasia approved this statement on 18 June 2025.
 
-[FIGURE_1]
+[SIGNATURE_1]
 
 **Nathan Poyner**  
 Chief Executive Officer Vehicle Systems International Asia Pacific  
 Managing Director Rheinmetall Defence Australia Pty Ltd  
 
 Date: 25 June 2025
-
-[SIGNATURE_1]
 ```
 
 TABLE MAPPING:
@@ -28,7 +26,7 @@ FIGURE MAPPING:
 {}
 
 SIGNATURE MAPPING:
-{}
+{'SIGNATURE_1': '**Signature Information**\n- **Signatory:** Nathan Poyner\nChief Executive Officer Vehicle Systems International Asia Pacific\nManaging Director Rheinmetall Defence Australia Pty Ltd\n- **Detection confidence:** High\n'}
 
 INTEGRATED CONTENT:
 ```markdown
@@ -40,11 +38,17 @@ This statement was approved by the boards of each of the three reporting entitie
 
 The board of Rheinmetall Defence Australia approved this statement on 24 June 2025, the board of Rheinmetall MAN Military Vehicles Australia on 24 June 2025 and the board of Logistic Solutions Australasia approved this statement on 18 June 2025.
 
+## Signature 1
+
+**Signature Information**
+- **Signatory:** Nathan Poyner
+Chief Executive Officer Vehicle Systems International Asia Pacific
+Managing Director Rheinmetall Defence Australia Pty Ltd
+- **Detection confidence:** High
+
 **Nathan Poyner**  
 Chief Executive Officer Vehicle Systems International Asia Pacific  
 Managing Director Rheinmetall Defence Australia Pty Ltd  
 
 Date: 25 June 2025
-
-[SIGNATURE_1]
 ```

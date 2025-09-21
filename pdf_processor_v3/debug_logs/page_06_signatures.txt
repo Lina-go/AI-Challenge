@@ -1,0 +1,3 @@
+=== PAGE 6 - SIGNATURES PROMPT OUTPUT ===
+
+[{'has_signature': True, 'signatory_text': 'Nathan Poyner\nChief Executive Officer Vehicle Systems International Asia Pacific\nManaging Director Rheinmetall Defence Australia Pty Ltd', 'is_image_signature': False, 'is_scanned': False, 'has_date': False, 'signature_date': '', 'page_number': 6, 'confidence': 'high'}]

@@ -1,17 +1,8 @@
 === PAGE 3 - FIGURES PROMPT OUTPUT ===
 
 FIGURE_1
-**Supply Chain Process Flow**
-1. Supplier Identification
-2. Regular Risk Analysis
-3. Reporting to Chief Purchasing Officer
-4. Supplier Risk Analysis by EcoVadis
-5. Risk Management Council Review
-6. Supplier Audits and Compliance Checks
+NOT_INFORMATIVE
 
 FIGURE_2
-**Photographic Representation of Rheinmetall Defence Australia**
-- Image showing Rheinmetall Defence Australia Managing Director with RGM and Supacat representatives and Armed Forces in Melbourne 2024
-
-FIGURE_3
-NOT_INFORMATIVE
+**Photographic Representation of Rheinmetall Defence Australia Engagements**
+- Image showing Rheinmetall Defence Australia Managing Director with RGM and Supacat representatives and Australian Defence Force representatives in Melbourne 2024.
